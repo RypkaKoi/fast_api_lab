@@ -1,0 +1,821 @@
+<!--
+  ═══════════════════════════════════════════════════════════════════
+  index.html · CREMA — витрина кофе · ГЛАВНАЯ (1 из 6)
+  Карта сайта: /  /login  /register  /profile  /admin  /404
+
+  ФОН: сгенерированный бесшовный фон из зёрен теперь ВСТРОЕН в style.css
+  (переменная --beans-tex). Внешних файлов не требуется — ошибки
+  загрузки больше нет. Если захотите реальное фото: сохраните его как
+  beans-bg.jpg и в style.css поменяйте --photo (инструкция там же).
+
+  Структура (оба файла в одной папке):
+      project/
+        main.py
+        index.html
+        style.css
+
+  main.py (FastAPI + Uvicorn):
+      from fastapi import FastAPI
+      from fastapi.responses import FileResponse
+
+      app = FastAPI()
+
+      @app.get("/")
+      async def index():
+          return FileResponse("index.html")
+
+      @app.get("/style.css")
+      async def css():
+          return FileResponse("style.css", media_type="text/css")
+
+  Запуск:  uvicorn main:app --reload
+  (Когда страниц станет больше — перейдите на StaticFiles:
+   app.mount("/static", StaticFiles(directory="static"), name="static"))
+  ═══════════════════════════════════════════════════════════════════
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CREMA — витрина кофе · сорта, обжарка и напитки</title>
+<meta name="description" content="Каталог обжарочной мастерской: происхождение сортов, точные составы напитков, интерактивная шкала обжарки и рецепты.">
+<meta name="theme-color" content="#0f0c09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z' fill='%23c8a468'/%3E%3Cpath d='M40 8C31 22 49 32 40 46C33 57 46 63 40 72' fill='none' stroke='%230f0c09' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════ SVG-СПРАЙТ ══════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-arabica" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#7d5a33"/></linearGradient>
+    <linearGradient id="g-robusta" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3322"/><stop offset="1" stop-color="#1c1109"/></linearGradient>
+    <linearGradient id="g-liberica" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a14e2e"/><stop offset="1" stop-color="#5a3320"/></linearGradient>
+    <linearGradient id="g-excelsa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#75855a"/><stop offset="1" stop-color="#3d3820"/></linearGradient>
+    <linearGradient id="g-geisha" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe6d4"/><stop offset="1" stop-color="#c8a468"/></linearGradient>
+    <linearGradient id="g-bourbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#a14e2e"/></linearGradient>
+    <linearGradient id="g-cup" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0e7d6"/><stop offset="1" stop-color="#cbb691"/></linearGradient>
+    <pattern id="pat-foam" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="#d9c6a2" opacity=".7"/></pattern>
+    <pattern id="pat-ice" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 10L10 -2" stroke="#ffffff" stroke-width="2" opacity=".5"/></pattern>
+  </defs>
+  <symbol id="bean-fill" viewBox="0 0 80 80">
+    <path d="M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z"/>
+    <path d="M40 8C31 22 49 32 40 46C33 57 46 63 40 72" fill="none" stroke="rgba(15,8,4,.45)" stroke-width="4.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11V21L12 16.6 6.5 21V3.5Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-5.8-7-11a7 7 0 0 1 14 0c0 5.2-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-mtn" viewBox="0 0 24 24"><path d="M3 19L9.5 7l3.4 6.1L15 9l6 10Z"/><path d="M8 10.8l1.5 1.7 1.5-1.7"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2Z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9 2.9-6Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.4 2"/></symbol>
+  <symbol id="i-temp" viewBox="0 0 24 24"><path d="M10 4a2 2 0 0 1 4 0v9.3a4.5 4.5 0 1 1-4 0V4Z"/><path d="M12 9v7"/></symbol>
+  <symbol id="i-arr" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.3-3.6 4.1-5.5 7.5-5.5s6.2 1.9 7.5 5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 9 12 4 20 4c0 9-5 15-13 15h-2Z"/><path d="M5 19c3-5 7-8.5 11-10.5"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3Z"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 21c-4 0-6.5-2.6-6.5-6 0-3.2 2.4-5.4 4-8 .6 1.6 1.4 2.4 2.5 3C13.5 7.5 14 5 13.5 3c3.5 2 5 5.5 5 8.5 0 4.5-2.5 9.5-6.5 9.5Z"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M12 3l-2 2.4M12 3l2 2.4M12 21l-2-2.4M12 21l2-2.4"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7.5 5.5c0-1 .8-1.2.8-2M11.5 5.5c0-1 .8-1.2.8-2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15M9 6V4.5h6V6M6.5 6.5l1 13h9l1-13M10 10.5v6M14 10.5v6"/></symbol>
+</svg>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- ══════════ ШАПКА ══════════ -->
+<header id="header">
+  <div class="head-in">
+    <a class="logo" href="#top" aria-label="CREMA — на главную">
+      <svg viewBox="0 0 80 80" aria-hidden="true"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg>
+      <span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span>
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#top" data-nav="top" class="active">Витрина</a>
+      <a href="#varieties" data-nav="varieties">Сорта</a>
+      <a href="#drinks" data-nav="drinks">Напитки</a>
+      <a href="#journey" data-nav="journey">Путь зерна</a>
+    </nav>
+    <div class="head-act">
+      <div class="fav-wrap">
+        <button id="favBtn" aria-label="Избранное" aria-expanded="false">
+          <svg class="ic"><use href="#i-bookmark"/></svg>
+          <span id="favCount">0</span>
+        </button>
+        <div id="favPanel" role="dialog" aria-label="Избранное">
+          <div class="fp-head">Избранное <span id="fpCount">0 позиций</span></div>
+          <div id="favList"></div>
+          <a class="fp-foot" href="/login">Войти и синхронизировать →</a>
+        </div>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="/login"><svg class="ic"><use href="#i-user"/></svg>Войти</a>
+      <a class="btn btn-sm" href="/register">Регистрация</a>
+      <button id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- мобильное меню -->
+<div id="mMenu" aria-hidden="true">
+  <a class="m-link" href="#top">Витрина <small>01</small></a>
+  <a class="m-link" href="#varieties">Сорта <small>02</small></a>
+  <a class="m-link" href="#drinks">Напитки <small>03</small></a>
+  <a class="m-link" href="#journey">Путь зерна <small>04</small></a>
+  <div class="m-auth">
+    <a class="btn btn-ghost" href="/login">Войти</a>
+    <a class="btn" href="/register">Регистрация</a>
+  </div>
+  <p class="m-note">CREMA · 6 СТРАНИЦ · FASTAPI + UVICORN</p>
+</div>
+
+<main>
+<!-- ══════════ ГЕРОЙ ══════════ -->
+<section id="top">
+  <div class="hero-bgwrap" data-plx="0.18" aria-hidden="true"><div class="hero-photo"></div></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="wrap hero-grid">
+    <div class="hero">
+      <span class="eyebrow" data-stage style="--d:.05s">Обжарочная мастерская · сезон 2026</span>
+      <h1 data-stage style="--d:.14s">От зерна<br>до <em>чашки</em></h1>
+      <p class="hero-lead" data-stage style="--d:.24s">Каталог витрины: шесть сортов с паспортами лотов, девять напитков с точными пропорциями и интерактивная шкала обжарки. Данные обновляются с каждой партией.</p>
+      <div class="hero-cta" data-stage style="--d:.34s">
+        <a class="btn" href="#varieties"><svg viewBox="0 0 80 80" class="ic" style="fill:currentColor;stroke:none"><use href="#bean-fill"/></svg>Каталог сортов</a>
+        <a class="btn btn-ghost" href="#drinks"><svg class="ic"><use href="#i-cup"/></svg>Напитки и рецепты</a>
+      </div>
+      <div class="stats" data-stage style="--d:.46s">
+        <div class="stat"><b>06</b><span>сортов</span></div>
+        <div class="stat"><b>09</b><span>напитков</span></div>
+        <div class="stat"><b>04</b><span>обжарки</span></div>
+        <div class="stat"><b>12</b><span>стран</span></div>
+      </div>
+    </div>
+
+    <!-- ШКАЛА ОБЖАРКИ -->
+    <div class="lab" id="lab" data-stage style="--d:.4s">
+      <div class="lab-head"><h2>Шкала обжарки</h2><span class="live">ИНТЕРАКТИВ</span></div>
+      <p class="lab-sub">Положение ползунка меняет цвет чашки и профиль вкуса.</p>
+      <div class="cup-wrap">
+        <svg class="cup" viewBox="0 0 240 210" aria-label="Чашка кофе, цвет зависит от обжарки">
+          <path class="steam s1" d="M96 60C91 50 100 44 96 34 92 24 100 18 97 9"/>
+          <path class="steam s2" d="M120 58C115 48 124 42 120 32 116 22 124 16 121 6"/>
+          <path class="steam s3" d="M144 60C139 50 148 44 144 34 140 24 148 18 145 9"/>
+          <ellipse cx="120" cy="188" rx="80" ry="12" fill="#2b1d11" stroke="rgba(200,164,104,.2)"/>
+          <ellipse cx="120" cy="186" rx="48" ry="7" fill="#201409"/>
+          <ellipse cx="120" cy="176" rx="46" ry="8" fill="rgba(0,0,0,.3)"/>
+          <path d="M182 100C205 97 214 113 207 128 201 141 187 146 178 141" fill="none" stroke="url(#g-cup)" stroke-width="11" stroke-linecap="round"/>
+          <path d="M58 92C58 86 62 82 68 82L172 82C178 82 182 86 182 92 182 132 168 164 150 172L90 172C72 164 58 132 58 92Z" fill="url(#g-cup)"/>
+          <ellipse cx="120" cy="84" rx="62" ry="16" fill="#ece1cc" stroke="rgba(28,16,8,.25)"/>
+          <ellipse id="cupLiquid" cx="120" cy="84" rx="53" ry="12" style="fill:var(--liquid)"/>
+          <ellipse cx="120" cy="84" rx="53" ry="12" fill="none" style="stroke:var(--crema-c)" stroke-width="3" opacity=".85"/>
+          <ellipse cx="104" cy="80" rx="16" ry="4" fill="#fff" opacity=".1"/>
+        </svg>
+      </div>
+      <div class="roast-read"><span id="roastName">Средняя</span><span id="roastAgtron">Agtron 66</span></div>
+      <div class="range-row">
+        <span class="mono">Light</span>
+        <input type="range" id="roastRange" min="0" max="100" value="42" aria-label="Степень обжарки">
+        <span class="mono">Dark</span>
+      </div>
+      <div class="presets" role="group" aria-label="Пресеты обжарки">
+        <button class="preset" data-roast="12">Светлая</button>
+        <button class="preset on" data-roast="42">Средняя</button>
+        <button class="preset" data-roast="68">Венская</button>
+        <button class="preset" data-roast="92">Тёмная</button>
+      </div>
+      <div class="lab-bars">
+        <div class="lb-row"><label>Кислинка</label><div class="bar"><i id="barAcid"></i></div><output id="valAcid">0</output></div>
+        <div class="lb-row"><label>Сладость</label><div class="bar"><i id="barSweet"></i></div><output id="valSweet">0</output></div>
+        <div class="lb-row"><label>Тело</label><div class="bar"><i id="barBody"></i></div><output id="valBody">0</output></div>
+        <div class="lb-row"><label>Горчинка</label><div class="bar"><i id="barBitter"></i></div><output id="valBitter">0</output></div>
+      </div>
+      <div class="lab-notes"><div id="roastNotes">карамель · орех · красное яблоко</div><p id="roastDesc">Баланс сладости и кислотности — универсальная обжарка.</p></div>
+    </div>
+  </div>
+  <span class="scroll-hint">ЛИСТАЙТЕ ВНИЗ ↓</span>
+</section>
+
+<!-- ══════════ ТИКЕР ══════════ -->
+<div class="marquee-sec" aria-hidden="true">
+  <div class="marquee"><div class="mq-track" id="mqTrack"></div></div>
+</div>
+
+<!-- ══════════ СОРТА ══════════ -->
+<section id="varieties" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="sec-index">РАЗДЕЛ 01 · ПРОИСХОЖДЕНИЕ</span>
+        <span class="eyebrow">Каталог зерна</span>
+        <h2>Сорта и <em>происхождение</em></h2>
+        <p class="sec-lead">Паспорт каждого лота: регион, высота, обработка, содержание кофеина и профиль чашки. Поиск и фильтры работают по всем карточкам витрины.</p>
+      </div>
+      <span class="upd">обновлено 26.11.2026</span>
+    </div>
+
+    <div class="toolbar reveal" style="--d:.1s">
+      <label class="search">
+        <svg class="ic"><use href="#i-search"/></svg>
+        <input type="search" id="vSearch" placeholder="Поиск по названию, региону, нотам…" aria-label="Поиск по сортам">
+      </label>
+      <div class="v-chips" id="vChips" role="group" aria-label="Фильтр по видам">
+        <button class="chip on" data-chip="all">Все <span class="n"></span></button>
+        <button class="chip" data-chip="arabica">Арабика <span class="n"></span></button>
+        <button class="chip" data-chip="robusta">Робуста <span class="n"></span></button>
+        <button class="chip" data-chip="rare">Редкие <span class="n"></span></button>
+      </div>
+      <select class="sortsel" id="vSort" aria-label="Сортировка">
+        <option value="pop">По популярности</option>
+        <option value="rating">По оценке</option>
+        <option value="price-asc">Цена: сначала дешевле</option>
+        <option value="price-desc">Цена: сначала дороже</option>
+        <option value="caffeine">Больше кофеина</option>
+      </select>
+    </div>
+    <div class="subrow reveal" style="--d:.15s">
+      <span id="vCount" aria-live="polite">6 из 6 сортов</span>
+      <a class="admin-link" href="/admin" title="Страница управления содержимым витрины"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a>
+    </div>
+
+    <div class="v-grid" id="vGrid"></div>
+    <div class="empty" id="vEmpty">
+      <svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#8a6a35"/></svg>
+      <h3>Ничего не найдено</h3>
+      <p>Измените запрос или сбросьте фильтры.</p>
+      <button class="btn btn-dark btn-sm" id="vReset">Сбросить фильтры</button>
+    </div>
+    <noscript><p style="padding:30px;text-align:center">Включите JavaScript, чтобы увидеть карточки сортов и напитков.</p></noscript>
+  </div>
+</section>
+
+<!-- ══════════ НАПИТКИ ══════════ -->
+<section id="drinks" class="sec-pad on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="sec-index">РАЗДЕЛ 02 · МЕНЮ</span>
+        <span class="eyebrow">Карта напитков</span>
+        <h2>Составы и <em>пропорции</em></h2>
+        <p class="sec-lead">Схема каждого стакана показывает точное соотношение ингредиентов. В карточке — пошаговый рецепт, температура подачи и содержание кофеина.</p>
+      </div>
+      <div class="legend" aria-label="Легенда составов">
+        <div><span class="sw" style="background:#4a2a15"></span>Эспрессо</div>
+        <div><span class="sw" style="background:#f3e6cf"></span>Молоко / сливки</div>
+        <div><span class="sw sw-foam"></span>Пена</div>
+        <div><span class="sw" style="background:#6fa7cc"></span>Вода / тоник</div>
+        <div><span class="sw sw-ice"></span>Лёд</div>
+        <div><span class="sw" style="background:#c8a468"></span>Шоколад / сироп</div>
+      </div>
+    </div>
+    <div class="d-tabs reveal" id="dTabs" role="group" aria-label="Категории напитков" style="--d:.1s">
+      <button class="d-tab on" data-cat="all"><svg class="ic"><use href="#i-cup"/></svg>Все <span class="n"></span></button>
+      <button class="d-tab" data-cat="classic"><svg class="ic"><use href="#i-bolt"/></svg>Классика <span class="n"></span></button>
+      <button class="d-tab" data-cat="milk"><svg class="ic"><use href="#i-drop"/></svg>Молочные <span class="n"></span></button>
+      <button class="d-tab" data-cat="cold"><svg class="ic"><use href="#i-snow"/></svg>Холодные <span class="n"></span></button>
+      <button class="d-tab" data-cat="dessert"><svg class="ic"><use href="#i-star"/></svg>Десертные <span class="n"></span></button>
+    </div>
+    <div class="d-grid" id="dGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════ ПУТЬ ЗЕРНА ══════════ -->
+<section id="journey" class="sec-pad">
+  <div class="wrap j-grid">
+    <div class="j-left reveal">
+      <span class="sec-index">РАЗДЕЛ 03 · ТЕХНОЛОГИЯ</span>
+      <span class="eyebrow">Производственная цепочка</span>
+      <h2>Пять этапов <em>до чашки</em></h2>
+      <p>Вкус формируется на каждом этапе — от терруара плантации до температуры воды. Ниже — контрольные точки, которые определяют результат.</p>
+      <div class="j-fact">
+        <svg class="ic"><use href="#i-temp"/></svg>
+        <div><b>92–96 °C</b><span>рабочая температура воды</span></div>
+      </div>
+      <br>
+      <a class="btn btn-dark" href="#varieties"><svg class="ic"><use href="#i-arr"/></svg>К каталогу сортов</a>
+    </div>
+    <div class="steps">
+      <article class="step reveal" style="--d:.05s"><span class="step-n">01</span><div><h3><svg class="ic"><use href="#i-pin"/></svg>Происхождение</h3><p>Высота, вулканическая почва и разновидность дерева задают характер зерна. Чем выше плантация, тем медленнее созревает ягода — и тем сложнее кислотность в чашке.</p></div></article>
+      <article class="step reveal" style="--d:.1s"><span class="step-n">02</span><div><h3><svg class="ic"><use href="#i-drop"/></svg>Обработка</h3><p>Мытая — чистая и звонкая; натуральная — ягодная и винная; хани — медовая сладость между ними. Способ снятия мякоти меняет вкус сильнее, чем страна на этикетке.</p></div></article>
+      <article class="step reveal" style="--d:.15s"><span class="step-n">03</span><div><h3><svg class="ic"><use href="#i-fire"/></svg>Обжарка</h3><p>При 196 °C происходит первый крэк — зерно раскрывается. Светлая обжарка сохраняет терруар, тёмная заменяет его шоколадом и дымом. Сравните профили на шкале в начале страницы.</p></div></article>
+      <article class="step reveal" style="--d:.2s"><span class="step-n">04</span><div><h3><svg viewBox="0 0 80 80" class="ic" style="fill:currentColor;stroke:none"><use href="#bean-fill"/></svg>Помол</h3><p>От пыли для турки до крупной крошки для френч-пресса: размер частиц управляет экстракцией. Мельче — быстрее и горче, крупнее — медленнее и мягче.</p></div></article>
+      <article class="step reveal" style="--d:.25s"><span class="step-n">05</span><div><h3><svg class="ic"><use href="#i-cup"/></svg>Заваривание</h3><p>Вода 92–96 °C, соотношение 1:15–1:17, свежая фильтрация. Дальше — дело техники: V60, аэропресс или эспрессо-машина определяют тело напитка.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section id="cta" class="sec-pad">
+  <div class="wrap">
+    <div class="cta-head reveal">
+      <span class="eyebrow">Следующий этап · аккаунт</span>
+      <h2>Витрина станет <em>личной</em></h2>
+      <p>Регистрация откроет синхронизацию избранного, дегустационные листы и панель управления содержимым главной страницы. Пока список сохраняется локально в вашем браузере.</p>
+    </div>
+    <div class="cta-cards">
+      <div class="cta-card reveal" style="--d:.05s"><svg class="ic"><use href="#i-user"/></svg><h3>Избранное в профиле</h3><p>Отмечайте сорта и напитки закладкой — после входа список перенесётся в личный кабинет и не потеряется.</p></div>
+      <div class="cta-card reveal" style="--d:.12s"><svg class="ic"><use href="#i-cup"/></svg><h3>Дегустационные листы</h3><p>Подборки под способ заваривания: фильтр-наборы, эспрессо-бленды, холодные напитки летнего меню.</p></div>
+      <div class="cta-card reveal" style="--d:.19s"><svg class="ic"><use href="#i-lock"/></svg><h3>Панель управления</h3><p>Редакторы смогут добавлять сорта, изменять цены и рецепты на отдельной странице управления витриной.</p></div>
+    </div>
+    <div class="cta-row reveal" style="--d:.2s">
+      <a class="btn" href="/register"><svg class="ic"><use href="#i-user"/></svg>Создать аккаунт</a>
+      <a class="btn btn-ghost-ink" href="/login">Войти</a>
+      <span class="cta-stack">FASTAPI · UVICORN · 6 СТРАНИЦ</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ══════════ ПОДВАЛ ══════════ -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a class="logo" href="#top"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+        <p>Витрина спешелти-кофе: происхождение, обжарка и точные составы напитков. Обжарка малыми партиями, каппинг каждую пятницу.</p>
+        <div class="f-badges"><span class="f-badge">FastAPI</span><span class="f-badge">Uvicorn</span><span class="f-badge">HTML · CSS · JS</span></div>
+      </div>
+      <div class="f-col">
+        <h4>Витрина</h4>
+        <ul>
+          <li><a href="#varieties">Сорта и микролоты</a></li>
+          <li><a href="#drinks">Напитки и рецепты</a></li>
+          <li><a href="#journey">Путь зерна</a></li>
+          <li><a href="#top">Шкала обжарки</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Страницы · 6</h4>
+        <ul>
+          <li><a href="/"><span class="cur"></span>Главная</a></li>
+          <li><a href="/login">Вход <span class="soon">скоро</span></a></li>
+          <li><a href="/register">Регистрация <span class="soon">скоро</span></a></li>
+          <li><a href="/profile">Личный профиль <span class="soon">скоро</span></a></li>
+          <li><a href="/admin"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной <span class="soon">скоро</span></a></li>
+          <li><a href="/404">Страница 404</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Рассылка обжарочной</h4>
+        <p>Новые лоты, изменения цен и рецепты — раз в две недели. Без спама.</p>
+        <form id="nlForm" novalidate>
+          <input type="email" id="nlEmail" placeholder="you@example.com" required aria-label="Электронная почта">
+          <button class="btn" type="submit" aria-label="Подписаться"><svg class="ic"><use href="#i-arr"/></svg></button>
+        </form>
+        <div id="nlOk"><svg class="ic"><use href="#i-check"/></svg>Подписка оформлена. Первое письмо уже в пути.</div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CREMA · Обжарочная мастерская</span>
+      <span>Обжарка малыми партиями · <a href="mailto:hello@crema.coffee">hello@crema.coffee</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════ МОДАЛКА / ТОСТЫ / НАВЕРХ ══════════ -->
+<div id="modal" role="dialog" aria-modal="true" aria-label="Карточка подробнее">
+  <div class="modal-card">
+    <button id="modalClose" aria-label="Закрыть"><svg class="ic"><use href="#i-x"/></svg></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div id="toasts" aria-live="polite"></div>
+<button id="backTop" aria-label="Наверх"><svg class="ic"><use href="#i-up"/></svg></button>
+
+<script>
+(function(){
+'use strict';
+/* ══════════ ДАННЫЕ ВИТРИНЫ ══════════ */
+const VARIETIES=[
+ {id:'arabica',name:'Арабика',latin:'Coffea arabica',kind:'Арабика',tone:'tag-brass',tags:['arabica'],grad:'g-arabica',rot:-18,
+  origin:'Эфиопия',region:'Йиргачефф',alt:'1900–2200 м',process:'Мытая',caff:1.2,roast:'Светлая–средняя',rating:4.8,price:890,pop:98,
+  notes:['жасмин','лимон','чёрный чай'],profile:{acid:85,body:55,sweet:70,bitter:20},brew:['V60','Аэропресс','Кемекс'],
+  desc:'Родина арабики — высокогорные леса Эфиопии. Именно этот вид дал миру большинство спешелти-лотов: сложная кислотность, цветочные и фруктовые ноты, деликатное тело. Мытая обработка Йиргачеффа подчёркивает жасмин и цитрус — классика для фильтра.'},
+ {id:'robusta',name:'Робуста',latin:'Coffea canephora',kind:'Робуста',tone:'tag-dark',tags:['robusta'],grad:'g-robusta',rot:14,
+  origin:'Вьетнам',region:'Даклак',alt:'500–800 м',process:'Натуральная',caff:2.4,roast:'Тёмная',rating:4.5,price:590,pop:84,
+  notes:['горький шоколад','орех','табак'],profile:{acid:25,body:90,sweet:40,bitter:85},brew:['Эспрессо','Мока','Турка'],
+  desc:'Кофеина почти вдвое больше, чем у арабики, а хлорогеновые кислоты дают плотную горчинку и орехово-табачный профиль. Качественная робуста — фундамент эспрессо-блендов: она отвечает за густую крема и шоколадное послевкусие.'},
+ {id:'liberica',name:'Либерика',latin:'Coffea liberica',kind:'Либерика',tone:'tag-brick',tags:['rare'],grad:'g-liberica',rot:-30,
+  origin:'Филиппины',region:'Батангас',alt:'300–600 м',process:'Натуральная',caff:1.0,roast:'Средняя',rating:4.3,price:1190,pop:55,
+  notes:['джекфрут','дым','цветочный мёд'],profile:{acid:45,body:70,sweet:60,bitter:45},brew:['Френч-пресс','Турка'],
+  desc:'Самый редкий коммерческий вид: менее 2% мирового урожая. Крупные асимметричные зёрна дают экзотический профиль — джекфрут, цветочный мёд и лёгкая дымность. На Филиппинах этот кофе называют «капенг барако».'},
+ {id:'excelsa',name:'Эксцельса',latin:'Coffea excelsa',kind:'Эксцельса',tone:'tag-brick',tags:['rare'],grad:'g-excelsa',rot:22,
+  origin:'Малайзия',region:'Саравак',alt:'400–900 м',process:'Хани',caff:0.9,roast:'Средняя',rating:4.2,price:990,pop:48,
+  notes:['зелёное яблоко','тарт','сухофрукты'],profile:{acid:75,body:50,sweet:55,bitter:30},brew:['Фильтр','Вьетнамский фин'],
+  desc:'Ботанически — разновидность либерики, но в чашке ведёт себя иначе: яркая фруктовая кислотность, зелёное яблоко и сухофрукты. В блендах Юго-Восточной Азии эксцельсу используют ради верхних нот и сложности аромата.'},
+ {id:'geisha',name:'Гейша',latin:'Coffea arabica · Geisha',kind:'Микролот · арабика',tone:'tag-brass',tags:['arabica','rare'],grad:'g-geisha',rot:-12,
+  origin:'Панама',region:'Бокете',alt:'1600–1800 м',process:'Мытая',caff:1.1,roast:'Светлая',rating:4.9,price:2490,pop:92,
+  notes:['жасмин','бергамот','персик'],profile:{acid:90,body:40,sweet:80,bitter:10},brew:['V60','Кемекс'],
+  desc:'Легендарный сорт из панамского Бокете: жасмин, бергамот и персиковая сладость. Лоты гейши устанавливают ценовые рекорды на аукционе Best of Panama. Обжарка максимально светлая, чтобы сохранить цветочную ароматику.'},
+ {id:'bourbon',name:'Бурбон',latin:'Coffea arabica · Bourbon',kind:'Арабика · бурбон',tone:'tag-brass',tags:['arabica'],grad:'g-bourbon',rot:30,
+  origin:'Руанда',region:'Ньямасеке',alt:'1700–2000 м',process:'Мытая',caff:1.3,roast:'Средняя',rating:4.7,price:1090,pop:88,
+  notes:['молочный шоколад','карамель','апельсин'],profile:{acid:60,body:65,sweet:85,bitter:25},brew:['Эспрессо','Аэропресс','Френч-пресс'],
+  desc:'Одна из старейших культурных разновидностей арабики: плотная карамельная сладость, молочный шоколад и мягкая апельсиновая кислотность. Универсален — одинаково хорош в эспрессо, фильтре и молочных напитках.'}
+];
+const LTYPE={
+ espresso:{c:'#4a2a15',label:'Эспрессо'},milk:{c:'#f3e6cf',label:'Молоко'},foam:{c:'#fbf3e2',label:'Пена',pat:'pat-foam'},
+ water:{c:'#6fa7cc',label:'Вода'},ice:{c:'#cfe9f4',label:'Лёд',pat:'pat-ice'},cream:{c:'#f6e7c8',label:'Сливки'},
+ chocolate:{c:'#6b3f1e',label:'Шоколад'},syrup:{c:'#c8a468',label:'Сироп'}
+};
+const DRINKS=[
+ {id:'espresso',name:'Эспрессо',cats:['classic'],vol:30,caff:63,str:5,price:150,time:'30 сек',temp:'67–70 °C',
+  layers:[{t:'espresso',ml:30}],
+  steps:['Прогрейте чашку и группу машины.','Смолите 18 г кофе в тонкий помол, распределите и утрамбуйте.','Экстрагируйте 25–30 секунд до 36–40 г напитка.','Подавайте сразу — крема сохраняется меньше минуты.'],
+  tip:'Ориентир — соотношение 1:2 и струйка цвета тёплого мёда.'},
+ {id:'americano',name:'Американо',cats:['classic'],vol:180,caff:63,str:3,price:160,time:'1 мин',temp:'85 °C',
+  layers:[{t:'water',ml:150},{t:'espresso',ml:30}],
+  steps:['Приготовьте эспрессо или доппио.','Нагрейте воду до 90–92 °C.','Влейте эспрессо в воду — так крема сохранится.'],
+  tip:'Порядок «вода → эспрессо» называется long black и даёт более плотную крема.'},
+ {id:'cappuccino',name:'Капучино',cats:['milk'],vol:180,caff:63,str:3,price:220,time:'3 мин',temp:'60–65 °C',
+  layers:[{t:'espresso',ml:30},{t:'milk',ml:90},{t:'foam',ml:60}],
+  steps:['Приготовьте эспрессо в прогретую чашку 180 мл.','Взбейте молоко до 60–65 °C с плотной пеной около сантиметра.','Влейте молоко по центру, пену довершите свободным наливом.'],
+  tip:'Классическая пропорция — треть эспрессо, треть молока, треть пены.'},
+ {id:'latte',name:'Латте',cats:['milk'],vol:300,caff:63,str:2,price:240,time:'3 мин',temp:'60–65 °C',
+  layers:[{t:'milk',ml:250,label:'Молоко'},{t:'espresso',ml:30},{t:'foam',ml:20}],
+  steps:['Взбейте молоко до тонкой глянцевой пены 0,5 см.','Влейте молоко в бокал, оставив место для кофе.','Тонкой струйкой добавьте эспрессо — получатся слои латте-макиато.'],
+  tip:'Для латте-арта пена должна быть глянцевой, как свежая краска.'},
+ {id:'flatwhite',name:'Флэт уайт',cats:['milk'],vol:160,caff:126,str:4,price:260,time:'3 мин',temp:'60 °C',
+  layers:[{t:'espresso',ml:60,label:'Доппио'},{t:'milk',ml:95},{t:'foam',ml:5,label:'Микропена'}],
+  steps:['Приготовьте доппио — двойной эспрессо 60 мл.','Взбейте 100 мл молока с микропеной не толще 5 мм.','Свободный налив: питчер ближе к поверхности, рисунок по желанию.'],
+  tip:'Флэт уайт — про кофе: молока меньше, пена тоньше, вкус ярче, чем в латте.'},
+ {id:'raf',name:'Раф',cats:['milk','dessert'],vol:250,caff:63,str:2,price:290,time:'4 мин',temp:'65 °C',
+  layers:[{t:'espresso',ml:30},{t:'cream',ml:180,label:'Сливки 11%'},{t:'foam',ml:40}],
+  steps:['В питчер: эспрессо, сливки 11% и ванильный сахар.','Взбейте всё вместе до 65 °C — раф взбивается целиком.','Перелейте в прогретую чашку с плотной сливочной пеной.'],
+  tip:'Раф создан в Москве в 1990-х — единственный напиток, где сливки взбиваются вместе с кофе.'},
+ {id:'mocha',name:'Мокка',cats:['dessert'],vol:280,caff:75,str:3,price:300,time:'5 мин',temp:'65 °C',
+  layers:[{t:'chocolate',ml:30},{t:'espresso',ml:30},{t:'milk',ml:180},{t:'foam',ml:40}],
+  steps:['Растопите шоколад или влейте сироп на дно чашки.','Добавьте эспрессо и размешайте до однородности.','Влейте взбитое молоко, завершите пеной и какао-крошкой.'],
+  tip:'Тёмный шоколад 70% делает мокку менее приторной и более глубокой.'},
+ {id:'coldbrew',name:'Колд брю',cats:['cold'],vol:300,caff:155,str:4,price:280,time:'16–18 ч',temp:'4–6 °C',
+  layers:[{t:'water',ml:100},{t:'espresso',ml:100,label:'Концентрат'},{t:'ice',ml:100}],
+  steps:['80 г крупного помола залейте литром воды комнатной температуры.','Настаивайте 16–18 часов в холодильнике.','Отфильтруйте, разбавьте концентрат 1:1 и подавайте со льдом.'],
+  tip:'Холодная экстракция почти не извлекает горечь — напиток слаще и мягче горячего фильтра.'},
+ {id:'esptonic',name:'Эспрессо-тоник',cats:['cold'],vol:300,caff:126,str:3,price:270,time:'2 мин',temp:'4–6 °C',
+  layers:[{t:'water',ml:150,label:'Тоник'},{t:'espresso',ml:60,label:'Доппио'},{t:'ice',ml:90}],
+  steps:['Наполните высокий бокал льдом.','Влейте 150 мл тоника.','Аккуратно добавьте доппио по ложке — слои разделятся.'],
+  tip:'Используйте нейтральный тоник без выраженного хинина — он конфликтует с кислотностью кофе.'}
+];
+const ALL={};
+VARIETIES.forEach(v=>ALL['v:'+v.id]={name:v.name,price:v.price,kind:'Сорт',icon:'bean'});
+DRINKS.forEach(d=>ALL['d:'+d.id]={name:d.name,price:d.price,kind:'Напиток',icon:'cup'});
+
+/* ══════════ ХЕЛПЕРЫ ══════════ */
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const ic=(n,cls)=>'<svg class="ic '+(cls||'')+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>';
+const beanSVG=(grad,rot,cls)=>'<svg class="bean-ic '+(cls||'')+'" viewBox="0 0 80 80" style="--rot:'+rot+'deg" aria-hidden="true"><use href="#bean-fill" fill="url(#'+grad+')"/></svg>';
+const fmt=n=>n.toLocaleString('ru-RU');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let uid=0;
+
+/* ══════════ СХЕМА СТАКАНА ══════════ */
+function glassSVG(layers,big){
+ const gid='gc'+(++uid);
+ const X=22,W=52,TOP=16,BOT=138,H=BOT-TOP;
+ const total=layers.reduce((s,l)=>s+l.ml,0);
+ let y=BOT,rects='';
+ const hasIce=layers.some(l=>l.t==='ice');
+ layers.forEach(l=>{
+   const h=l.ml/total*H; y-=h; const T=LTYPE[l.t];
+   rects+='<rect x="'+X+'" y="'+y.toFixed(1)+'" width="'+W+'" height="'+(h+.5).toFixed(1)+'" fill="'+T.c+'"/>';
+   if(T.pat) rects+='<rect x="'+X+'" y="'+y.toFixed(1)+'" width="'+W+'" height="'+(h+.5).toFixed(1)+'" fill="url(#'+T.pat+')"/>';
+   if(l.t==='espresso') rects+='<rect x="'+X+'" y="'+y.toFixed(1)+'" width="'+W+'" height="2.6" fill="#d9a05b"/>';
+ });
+ const straw=hasIce?'<path d="M66 3L55 62" stroke="#a14e2e" stroke-width="5" stroke-linecap="round"/>':'';
+ return '<svg class="glass'+(big?' glass-lg':'')+'" viewBox="0 0 96 150" aria-hidden="true">'
+  +'<defs><clipPath id="'+gid+'"><rect x="20" y="14" width="56" height="126" rx="8"/></clipPath></defs>'
+  +straw+'<g clip-path="url(#'+gid+')">'+rects+'</g>'
+  +'<rect x="20" y="14" width="56" height="126" rx="8" fill="none" stroke="rgba(239,230,212,.5)" stroke-width="2"/>'
+  +'<path d="M30 26v100" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"/></svg>';
+}
+const compList=(layers,cls)=>'<div class="'+cls+'">'+layers.map(l=>{
+ const T=LTYPE[l.t];
+ const pat=T.pat==='pat-foam'?' sw-foam':T.pat==='pat-ice'?' sw-ice':'';
+ const style=pat?'':' style="background:'+T.c+'"';
+ return '<div><span class="sw'+pat+'"'+style+'></span>'+(l.label||T.label)+'<b>'+l.ml+' мл</b></div>';
+}).join('')+'</div>';
+
+/* ══════════ ИЗБРАННОЕ ══════════ */
+let favs=new Set();
+try{ favs=new Set(JSON.parse(localStorage.getItem('crema-favs')||'[]')); }catch(e){}
+const saveFavs=()=>{ try{ localStorage.setItem('crema-favs',JSON.stringify([...favs])); }catch(e){} };
+function updateFavUI(){
+ const n=favs.size, c=$('#favCount');
+ c.textContent=n; c.classList.toggle('show',n>0);
+ $('#fpCount').textContent=n+' '+plural(n,['позиция','позиции','позиций']);
+ $$('[data-fav]').forEach(b=>{
+   const on=favs.has(b.dataset.fav);
+   b.classList.toggle('on',on); b.setAttribute('aria-pressed',on);
+ });
+ $$('[data-fav-label]').forEach(s=>{ s.textContent=favs.has(s.dataset.favLabel)?'В избранном':'В избранное'; });
+}
+function plural(n,f){ const m=n%10,h=n%100; if(m===1&&h!==11)return f[0]; if(m>=2&&m<=4&&(h<12||h>14))return f[1]; return f[2]; }
+function toggleFav(key){
+ const item=ALL[key]; if(!item)return;
+ const btns=$$('[data-fav="'+key+'"]');
+ if(favs.has(key)){
+   favs.delete(key);
+   toast('«'+item.name+'» удалено из избранного',{label:'Отменить',fn:()=>{favs.add(key);saveFavs();updateFavUI();renderFavPanel();}});
+ }else{
+   favs.add(key);
+   btns.forEach(b=>{b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');});
+   toast(item.name+' — добавлено в избранное');
+ }
+ saveFavs(); updateFavUI(); renderFavPanel();
+}
+function renderFavPanel(){
+ const list=$('#favList');
+ if(!favs.size){
+   list.innerHTML='<div class="fp-empty"><svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#b4a691"/></svg>Список пуст.<br>Отмечайте закладкой сорта и напитки —<br>или <a href="#varieties" data-close-panel>начните с каталога</a>.</div>';
+   return;
+ }
+ list.innerHTML=[...favs].map(k=>{
+   const it=ALL[k]; if(!it)return'';
+   const icon=it.icon==='bean'?'<svg class="ic" style="fill:currentColor;stroke:none" viewBox="0 0 80 80"><use href="#bean-fill"/></svg>':ic('cup');
+   return '<div class="fav-row">'+icon+'<div class="fr-t"><b>'+it.name+'</b><small>'+it.kind+' · '+fmt(it.price)+' ₽</small></div>'
+     +'<button class="fr-open" data-open="'+k+'" aria-label="Открыть '+it.name+'">'+ic('arr')+'</button>'
+     +'<button class="fr-del" data-fav="'+k+'" aria-label="Убрать '+it.name+'">'+ic('trash')+'</button></div>';
+ }).join('');
+}
+
+/* ══════════ ТОСТЫ ══════════ */
+function toast(msg,action){
+ const box=$('#toasts');
+ while(box.children.length>=3) box.firstChild.remove();
+ const t=document.createElement('div'); t.className='toast';
+ t.innerHTML=ic('check')+'<p>'+msg+'</p>'+(action?'<button class="t-act">'+action.label+'</button>':'');
+ box.appendChild(t);
+ const kill=()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),300); };
+ const timer=setTimeout(kill,4200);
+ if(action) t.querySelector('.t-act').addEventListener('click',()=>{ clearTimeout(timer); action.fn(); kill(); });
+}
+
+/* ══════════ РЕНДЕР: СОРТА ══════════ */
+const vState={q:'',chip:'all',sort:'pop'};
+const sorters={pop:(a,b)=>b.pop-a.pop,rating:(a,b)=>b.rating-a.rating,'price-asc':(a,b)=>a.price-b.price,'price-desc':(a,b)=>b.price-a.price,caffeine:(a,b)=>b.caff-a.caff};
+function vb(label,val){ return '<div class="vb-row"><label>'+label+'</label><div class="bar"><i style="width:'+val+'%"></i></div></div>'; }
+function cardV(v,i){
+ return '<article class="v-card card-enter" style="--d:'+(i*55)+'ms" data-open="v:'+v.id+'">'
+  +'<div class="vc-top"><span class="tag '+v.tone+'">'+v.kind+'</span>'
+  +'<button class="fav" data-fav="v:'+v.id+'" aria-label="В избранное: '+v.name+'" aria-pressed="false">'+ic('bookmark')+'</button></div>'
+  +'<div class="vc-id">'+beanSVG(v.grad,v.rot)+'<div><h3>'+v.name+'</h3><small>'+v.latin+'</small></div></div>'
+  +'<div class="vc-meta"><div>'+ic('pin')+v.origin+' · '+v.region+'</div><div>'+ic('mtn')+v.alt+' · '+v.process.toLowerCase()+' обработка</div>'
+  +'<div>'+ic('bolt')+'кофеин '+v.caff.toFixed(1)+'% · обжарка: '+v.roast.toLowerCase()+'</div></div>'
+  +'<div class="notes">'+v.notes.map(n=>'<span class="note">'+n+'</span>').join('')+'</div>'
+  +'<div class="vc-bars">'+vb('Кислинка',v.profile.acid)+vb('Тело',v.profile.body)+vb('Сладость',v.profile.sweet)+'</div>'
+  +'<div class="vc-foot"><div class="price"><b>'+fmt(v.price)+' ₽</b><span>/ 250 г</span></div>'
+  +'<span class="rate">'+ic('star','ic-fill')+v.rating.toFixed(1)+'</span>'
+  +'<button class="btn btn-dark btn-sm" data-open="v:'+v.id+'">Подробнее '+ic('arr')+'</button></div></article>';
+}
+function renderV(){
+ const q=vState.q.trim().toLowerCase();
+ let list=VARIETIES.filter(v=>(vState.chip==='all'||v.tags.includes(vState.chip))
+   &&(!q||(v.name+' '+v.latin+' '+v.origin+' '+v.region+' '+v.notes.join(' ')).toLowerCase().includes(q)))
+   .sort(sorters[vState.sort]);
+ $('#vGrid').innerHTML=list.map(cardV).join('');
+ $('#vEmpty').classList.toggle('show',!list.length);
+ $('#vCount').textContent=list.length+' из '+VARIETIES.length+' '+plural(VARIETIES.length,['сорта','сортов','сортов']);
+ updateFavUI();
+}
+/* ══════════ РЕНДЕР: НАПИТКИ ══════════ */
+let dCat='all';
+function cardD(d,i){
+ const dots=Array.from({length:5},(_,k)=>'<span class="'+(k<d.str?'on':'')+'"></span>').join('');
+ return '<article class="d-card card-enter" style="--d:'+(i*55)+'ms" data-open="d:'+d.id+'">'
+  +'<div class="dc-head"><div><h3>'+d.name+'</h3><small>'+d.vol+' мл · '+d.time+'</small></div>'
+  +'<button class="fav" data-fav="d:'+d.id+'" aria-label="В избранное: '+d.name+'" aria-pressed="false">'+ic('bookmark')+'</button></div>'
+  +'<div class="dc-mid">'+glassSVG(d.layers)+compList(d.layers,'comp')+'</div>'
+  +'<div class="dc-meta"><span class="caff">'+ic('bolt')+d.caff+' мг</span>'
+  +'<span class="strength" title="Крепость '+d.str+' из 5">'+dots+'<small>крепость</small></span></div>'
+  +'<div class="vc-foot"><div class="price"><b>'+fmt(d.price)+' ₽</b><span>за порцию</span></div>'
+  +'<button class="btn-recipe" data-open="d:'+d.id+'">Рецепт '+ic('arr')+'</button></div></article>';
+}
+function renderD(){
+ const list=DRINKS.filter(d=>dCat==='all'||d.cats.includes(dCat));
+ $('#dGrid').innerHTML=list.map(cardD).join('');
+ updateFavUI();
+}
+
+/* ══════════ МОДАЛКА ══════════ */
+let lastFocus=null;
+function lb(label,val){ return '<div class="lb-row"><label>'+label+'</label><div class="bar"><i style="width:'+val+'%"></i></div><output>'+val+'</output></div>'; }
+function openItem(key){
+ const body=$('#modalBody');
+ if(key.startsWith('v:')){
+   const v=VARIETIES.find(x=>x.id===key.slice(2)); if(!v)return;
+   body.innerHTML='<div class="m-head">'+beanSVG(v.grad,v.rot)+'<div><h3>'+v.name+'</h3><small>'+v.latin+'</small></div></div>'
+    +'<div class="m-meta">'
+    +'<div>'+ic('pin')+'<b>'+v.origin+' · '+v.region+'</b><span>происхождение</span></div>'
+    +'<div>'+ic('mtn')+'<b>'+v.alt+'</b><span>высота</span></div>'
+    +'<div>'+ic('drop')+'<b>'+v.process+'</b><span>обработка</span></div>'
+    +'<div>'+ic('bolt')+'<b>'+v.caff.toFixed(1)+'%</b><span>кофеин</span></div>'
+    +'<div>'+ic('fire')+'<b>'+v.roast+'</b><span>обжарка</span></div>'
+    +'<div>'+ic('star','ic-fill')+'<b>'+v.rating.toFixed(1)+' / 5</b><span>оценка каппинга</span></div></div>'
+    +'<p class="m-desc">'+v.desc+'</p>'
+    +'<div class="m-sec">Профиль чашки</div><div class="m-bars">'
+    +lb('Кислинка',v.profile.acid)+lb('Сладость',v.profile.sweet)+lb('Тело',v.profile.body)+lb('Горчинка',v.profile.bitter)+'</div>'
+    +'<div class="m-sec">Рекомендуемые способы</div><div class="m-chips">'+v.brew.map(b=>'<span class="m-chip">'+ic('cup')+b+'</span>').join('')+'</div>'
+    +'<div class="m-foot"><div class="price"><b>'+fmt(v.price)+' ₽</b><span>/ 250 г зерна</span></div>'
+    +'<button class="btn" data-fav="v:'+v.id+'">'+ic('bookmark')+'<span data-fav-label="v:'+v.id+'">В избранное</span></button></div>';
+ }else{
+   const d=DRINKS.find(x=>x.id===key.slice(2)); if(!d)return;
+   const total=d.layers.reduce((s,l)=>s+l.ml,0);
+   const comp='<div class="m-comp">'+d.layers.map(l=>{
+     const T=LTYPE[l.t]; const pat=T.pat==='pat-foam'?' sw-foam':T.pat==='pat-ice'?' sw-ice':'';
+     const style=pat?'':' style="background:'+T.c+'"';
+     return '<div><span class="sw'+pat+'"'+style+'></span>'+(l.label||T.label)+'<b>'+l.ml+' мл</b><em>'+Math.round(l.ml/total*100)+'%</em></div>';
+   }).join('')+'</div>';
+   body.innerHTML='<div class="m-head"><div><h3>'+d.name+'</h3><small>'+d.vol+' мл · крепость '+d.str+'/5</small></div></div>'
+    +'<div class="m-drink-grid">'+glassSVG(d.layers,true)+comp+'</div>'
+    +'<div class="m-meta">'
+    +'<div>'+ic('bolt')+'<b>'+d.caff+' мг</b><span>кофеин</span></div>'
+    +'<div>'+ic('temp')+'<b>'+d.temp+'</b><span>подача</span></div>'
+    +'<div>'+ic('clock')+'<b>'+d.time+'</b><span>приготовление</span></div></div>'
+    +'<div class="m-sec">Пошаговый рецепт</div><ol class="m-steps">'+d.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol>'
+    +'<div class="tip">'+ic('leaf')+'<div><b>Совет бариста</b><p>'+d.tip+'</p></div></div>'
+    +'<div class="m-foot"><div class="price"><b>'+fmt(d.price)+' ₽</b><span>за порцию</span></div>'
+    +'<button class="btn" data-fav="d:'+d.id+'">'+ic('bookmark')+'<span data-fav-label="d:'+d.id+'">В избранное</span></button></div>';
+ }
+ lastFocus=document.activeElement;
+ $('#modal').classList.add('open');
+ document.documentElement.classList.add('locked');
+ $('.modal-card').scrollTop=0;
+ updateFavUI();
+ $('#modalClose').focus();
+}
+function closeModal(){
+ if(!$('#modal').classList.contains('open'))return;
+ $('#modal').classList.remove('open');
+ document.documentElement.classList.remove('locked');
+ if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+
+/* ══════════ ШКАЛА ОБЖАРКИ ══════════ */
+const ROAST=[
+ {name:'Светлая',notes:'жасмин · цитрус · чёрный чай',desc:'Плотность ниже, кислотность яркая — раскрывает терруар.'},
+ {name:'Средняя',notes:'карамель · орех · красное яблоко',desc:'Баланс сладости и кислотности — универсальная обжарка.'},
+ {name:'Венская',notes:'тёмный шоколад · специи · патока',desc:'Масла выходят на поверхность, тело становится сиропным.'},
+ {name:'Французская',notes:'дым · горький шоколад · уголь',desc:'Минимум кислотности, максимум горечи и плотности.'}
+];
+const STOPS=[[201,142,84],[173,116,60],[133,82,40],[86,49,24],[43,24,13]];
+const lerp=(a,b,f)=>Math.round(a+(b-a)*f);
+function setRoast(val){
+ const t=val/100, lab=$('#lab');
+ const seg=Math.min(3.999,t*4), i=Math.floor(seg), f=seg-i;
+ const c=STOPS[i].map((ch,k)=>lerp(ch,STOPS[i+1][k],f));
+ const cr=c.map(ch=>lerp(ch,242,.5));
+ lab.style.setProperty('--liquid','rgb('+c.join(',')+')');
+ lab.style.setProperty('--crema-c','rgb('+cr.join(',')+')');
+ const idx=Math.min(3,Math.floor(t*4));
+ $('#roastName').textContent=ROAST[idx].name;
+ $('#roastNotes').textContent=ROAST[idx].notes;
+ $('#roastDesc').textContent=ROAST[idx].desc;
+ $('#roastAgtron').textContent='Agtron '+Math.round(95-70*t);
+ const vals={Acid:Math.round(88-68*t),Sweet:Math.round(30+62*Math.sin(Math.PI*t)),Body:Math.round(28+64*t),Bitter:Math.round(8+82*t)};
+ Object.keys(vals).forEach(k=>{
+   const v=Math.max(0,Math.min(100,vals[k]));
+   $('#bar'+k).style.width=v+'%'; $('#val'+k).textContent=v;
+ });
+ $$('.preset').forEach(p=>p.classList.toggle('on',Math.min(3,Math.floor((+p.dataset.roast)/100*4))===idx));
+}
+
+/* ══════════ ТИКЕР ══════════ */
+(function(){
+ const origins=['ЭФИОПИЯ','КОЛУМБИЯ','БРАЗИЛИЯ','КЕНИЯ','ПАНАМА','ГВАТЕМАЛА','ВЬЕТНАМ','ЙЕМЕН','ИНДОНЕЗИЯ','РУАНДА','ФИЛИППИНЫ','МАЛАЙЗИЯ'];
+ const half='<span>'+origins.join('<em>◆</em>')+'<em>◆</em></span>';
+ $('#mqTrack').innerHTML=half+half;
+})();
+
+/* ══════════ СОБЫТИЯ ══════════ */
+document.addEventListener('click',e=>{
+ const t=e.target;
+ if(t.closest('#favBtn')){ togglePanel(); return; }
+ if(!t.closest('#favPanel')) closePanel();
+ if(t.closest('[data-close-panel]')) closePanel();
+ const f=t.closest('[data-fav]');
+ if(f){ toggleFav(f.dataset.fav); return; }
+ const o=t.closest('[data-open]');
+ if(o){ closePanel(); openItem(o.dataset.open); return; }
+ if(t.closest('#modalClose')||t.id==='modal') closeModal();
+});
+function togglePanel(){
+ const p=$('#favPanel'), open=!p.classList.contains('open');
+ p.classList.toggle('open',open);
+ $('#favBtn').setAttribute('aria-expanded',open);
+ if(open)renderFavPanel();
+}
+function closePanel(){ $('#favPanel').classList.remove('open'); $('#favBtn').setAttribute('aria-expanded','false'); }
+const burger=$('#burger');
+burger.addEventListener('click',()=>{
+ const open=!document.documentElement.classList.contains('menu-open');
+ document.documentElement.classList.toggle('menu-open',open);
+ document.documentElement.classList.toggle('locked',open);
+ burger.setAttribute('aria-expanded',open);
+ $('#mMenu').setAttribute('aria-hidden',!open);
+});
+$$('#mMenu a').forEach(a=>a.addEventListener('click',()=>{
+ document.documentElement.classList.remove('menu-open','locked');
+ burger.setAttribute('aria-expanded','false');
+ $('#mMenu').setAttribute('aria-hidden','true');
+}));
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){ closeModal(); closePanel();
+   if(document.documentElement.classList.contains('menu-open'))burger.click();
+ }
+ if(e.key==='Tab'&&$('#modal').classList.contains('open')){
+   const f=$$('#modal button, #modal a, #modal input').filter(x=>x.offsetParent!==null);
+   if(!f.length)return;
+   const first=f[0],last=f[f.length-1];
+   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+ }
+});
+let searchTimer;
+$('#vSearch').addEventListener('input',e=>{
+ clearTimeout(searchTimer);
+ searchTimer=setTimeout(()=>{vState.q=e.target.value;renderV();},140);
+});
+$('#vChips').addEventListener('click',e=>{
+ const c=e.target.closest('[data-chip]'); if(!c)return;
+ $$('#vChips .chip').forEach(x=>x.classList.toggle('on',x===c));
+ vState.chip=c.dataset.chip; renderV();
+});
+$('#vSort').addEventListener('change',e=>{vState.sort=e.target.value;renderV();});
+$('#vReset').addEventListener('click',()=>{
+ vState.q=''; vState.chip='all'; $('#vSearch').value='';
+ $$('#vChips .chip').forEach(x=>x.classList.toggle('on',x.dataset.chip==='all'));
+ renderV();
+});
+$('#dTabs').addEventListener('click',e=>{
+ const b=e.target.closest('[data-cat]'); if(!b)return;
+ $$('#dTabs .d-tab').forEach(x=>x.classList.toggle('on',x===b));
+ dCat=b.dataset.cat; renderD();
+});
+$('#roastRange').addEventListener('input',e=>setRoast(+e.target.value));
+$$('.preset').forEach(p=>p.addEventListener('click',()=>{
+ $('#roastRange').value=p.dataset.roast; setRoast(+p.dataset.roast);
+}));
+$('#nlForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const inp=$('#nlEmail');
+ if(!inp.checkValidity()){ inp.reportValidity(); return; }
+ $('#nlForm').style.display='none';
+ $('#nlOk').classList.add('show');
+ toast('Подписка оформлена: '+inp.value);
+});
+$('#backTop').addEventListener('click',()=>scrollTo({top:0,behavior:reduced?'auto':'smooth'}));
+
+/* ══════════ СКРОЛЛ: шапка / прогресс / параллакс фото ══════════ */
+const plx=$$('[data-plx]');
+let ticking=false;
+function onScroll(){
+ if(ticking)return; ticking=true;
+ requestAnimationFrame(()=>{
+   const y=scrollY;
+   $('#header').classList.toggle('scrolled',y>8);
+   const h=document.documentElement.scrollHeight-innerHeight;
+   $('#progress').style.transform='scaleX('+(h>0?y/h:0)+')';
+   $('#backTop').classList.toggle('show',y>600);
+   if(!reduced&&y<innerHeight*1.4){
+     plx.forEach(el=>{ el.style.transform='translate3d(0,'+(y*parseFloat(el.dataset.plx)).toFixed(1)+'px,0)'; });
+   }
+   ticking=false;
+ });
+}
+addEventListener('scroll',onScroll,{passive:true});
+
+/* ══════════ REVEAL + АКТИВНАЯ НАВИГАЦИЯ ══════════ */
+if('IntersectionObserver' in window){
+ const ro=new IntersectionObserver(es=>es.forEach(en=>{
+   if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}
+ }),{threshold:.12});
+ $$('.reveal').forEach(el=>ro.observe(el));
+ const no=new IntersectionObserver(es=>es.forEach(en=>{
+   if(en.isIntersecting){
+     $$('.nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===en.target.id));
+   }
+ }),{rootMargin:'-40% 0px -55% 0px'});
+ ['top','varieties','drinks','journey'].forEach(id=>{const s=document.getElementById(id);if(s)no.observe(s);});
+}else{ $$('.reveal').forEach(el=>el.classList.add('in')); }
+
+/* ══════════ СТАРТ ══════════ */
+$$('#vChips .chip').forEach(c=>{
+ const k=c.dataset.chip;
+ c.querySelector('.n').textContent=k==='all'?VARIETIES.length:VARIETIES.filter(v=>v.tags.includes(k)).length;
+});
+$$('#dTabs .d-tab').forEach(b=>{
+ const k=b.dataset.cat;
+ b.querySelector('.n').textContent=k==='all'?DRINKS.length:DRINKS.filter(d=>d.cats.includes(k)).length;
+});
+renderV(); renderD(); renderFavPanel(); updateFavUI();
+setRoast(42); onScroll();
+})();
+</script>
+</body>
+</html>
