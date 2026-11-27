@@ -46,7 +46,7 @@ ASSETS = {
 
 WIRE_TAG = '<script src="wire.js"></script>'
 
-# В вёрстке ссылки вида index.html / login.html — отправляем их на «чистые» адреса FastAPI.
+
 PAGE_ALIASES = {
     "index.html": "/",
     "login.html": "/login",
@@ -153,7 +153,7 @@ def public_user(u: dict) -> dict:
             "lists": u.get("lists", [])}
 
 
-# ─────────── политика ролей: первый — админ, остальные — читатели ───────────
+# ───────────  первый — админ остальные — читатели ───────────
 def next_role(rows: list) -> str:
     """Роль нового аккаунта: администратор, если в системе ещё нет ни одного пользователя."""
     return ROLE_ADMIN if not rows else ROLE_READER
@@ -319,7 +319,7 @@ def bulk_patch(payload: BulkIn, request: Request):
         return save_catalog(c)
 
 
-# шаблонный маршрут создания — объявлен ПОСЛЕ точных, чтобы не перехватывать reorder/bulk
+
 @app.post("/api/catalog/{kind}")
 def catalog_create(kind: str, request: Request, item: dict):
     require_editor(request)
