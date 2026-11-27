@@ -1,0 +1,38 @@
+[
+  {
+    "id": "9453b80312c20313",
+    "name": "Koi",
+    "email": "thsshth@mail.ru",
+    "role": "editor",
+    "newsletter": true,
+    "salt": "bf65d03d42f8b6f650d01b616cef1e18",
+    "password_hash": "05c0d152b5a20247933fa552b1894eae0a969cf8fb543d79b3c25677a7dd5058",
+    "created_at": "2026-11-27T18:17:54+00:00",
+    "favorites": [],
+    "lists": []
+  },
+  {
+    "id": "fb386d4723de5024",
+    "name": "Ka",
+    "email": "fwrfrfref@mail.ru",
+    "role": "reader",
+    "newsletter": true,
+    "salt": "d55d9694cfee8d14b29faf6b29ff4576",
+    "password_hash": "6d6694b6f191a6ed8a86558c5df918f119cb8e76432610c105823533ad760e70",
+    "created_at": "2026-11-27T18:20:30+00:00",
+    "favorites": [],
+    "lists": []
+  },
+  {
+    "id": "abe570a7ec0a9b46",
+    "name": "kas",
+    "email": "qwertyu@mail.ru",
+    "role": "reader",
+    "newsletter": true,
+    "salt": "bda1ba8f5ec2bd55a663a3b5c09db70d",
+    "password_hash": "2176fbe5d647986207c1ea1a89825f879ea1046d050214500b9d41a55ecf6936",
+    "created_at": "2026-11-27T18:22:41+00:00",
+    "favorites": [],
+    "lists": []
+  }
+]

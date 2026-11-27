@@ -1,0 +1,441 @@
+<!--
+  register.html · CREMA — РЕГИСТРАЦИЯ (страница 3 из 6)
+  Все переходы между страницами ведут на .html-файлы рядом:
+      index.html · login.html · register.html · profile.html · admin.html · 404.html
+  Ресурсы: style.css, pages.css (рядом). Сервер: main.py.
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Регистрация — CREMA · витрина кофе</title>
+<meta name="description" content="Создайте аккаунт CREMA: синхронизация избранного, дегустационные листы и доступ к панели управления витриной.">
+<meta name="theme-color" content="#0f0c09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z' fill='%23c8a468'/%3E%3Cpath d='M40 8C31 22 49 32 40 46C33 57 46 63 40 72' fill='none' stroke='%230f0c09' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="g-bourbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#a14e2e"/></linearGradient>
+</defs>
+  <symbol id="bean-fill" viewBox="0 0 80 80"><path d="M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z"/><path d="M40 8C31 22 49 32 40 46C33 57 46 63 40 72" fill="none" stroke="rgba(15,8,4,.45)" stroke-width="4.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.3-3.6 4.1-5.5 7.5-5.5s6.2 1.9 7.5 5.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v6c0 4.4-3.1 7.9-7.5 9-4.4-1.1-7.5-4.6-7.5-9V6L12 3Z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M4 4l16 16M9.9 5.9A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-3.4 4.1M6.4 7.9A16.7 16.7 0 0 0 2.5 12S6 18.5 12 18.5c1.2 0 2.3-.2 3.3-.6"/><path d="M9.9 10.2a3 3 0 0 0 4.1 4.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.2v.6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.6"/></symbol>
+  <symbol id="i-arr" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7.5 5.5c0-1 .8-1.2.8-2M11.5 5.5c0-1 .8-1.2.8-2"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11V21L12 16.6 6.5 21V3.5Z"/></symbol>
+</svg>
+
+<header class="sh" id="sh">
+  <div class="sh-in">
+    <a class="logo" href="index.html" aria-label="CREMA — на главную">
+      <svg viewBox="0 0 80 80" aria-hidden="true"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg>
+      <span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span>
+    </a>
+    <nav class="sh-nav" aria-label="Основная навигация">
+      <a href="index.html">Витрина</a>
+      <a href="index.html#varieties">Сорта</a>
+      <a href="index.html#drinks">Напитки</a>
+      <a href="index.html#journey">Путь зерна</a>
+    </nav>
+    <div class="sh-act">
+      <a class="btn btn-ghost btn-sm" href="login.html"><svg class="ic"><use href="#i-user"/></svg>Войти</a>
+      <a class="btn btn-sm" href="register.html" aria-current="page">Регистрация</a>
+      <button id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <a class="m-link" href="index.html">Витрина <small>01</small></a>
+  <a class="m-link" href="index.html#varieties">Сорта <small>02</small></a>
+  <a class="m-link" href="index.html#drinks">Напитки <small>03</small></a>
+  <a class="m-link" href="index.html#journey">Путь зерна <small>04</small></a>
+  <div class="m-auth">
+    <a class="btn btn-ghost" href="login.html">Войти</a>
+    <a class="btn" href="register.html" aria-current="page">Регистрация</a>
+  </div>
+  <p class="m-note">CREMA · 6 СТРАНИЦ · FASTAPI + UVICORN</p>
+</div>
+
+<main class="auth">
+  <!-- ЛЕВАЯ ПАНЕЛЬ -->
+  <section class="auth-brand">
+    <div class="ab-photo" aria-hidden="true"></div>
+    <div class="ab-scrim" aria-hidden="true"></div>
+    <div class="ab-in">
+      <span class="eyebrow" data-stage style="--d:.05s">Аккаунт обжарочной</span>
+      <h1 data-stage style="--d:.12s">Витрина,<br>которая <em>помнит вас</em></h1>
+      <p data-stage style="--d:.2s">Отмечайте лоты закладкой, собирайте дегустационные листы и возвращайтесь к ним с любого устройства. Регистрация занимает меньше времени, чем экстракция эспрессо.</p>
+      <div class="benefits" data-stage style="--d:.3s">
+        <div class="benefit"><svg class="ic"><use href="#i-bookmark"/></svg><div><b>Избранное в профиле</b><span>Сорта и напитки сохраняются в кабинет, а не только в браузере.</span></div></div>
+        <div class="benefit"><svg class="ic"><use href="#i-cup"/></svg><div><b>Дегустационные листы</b><span>Подборки под V60, эспрессо и холодное меню с вашими заметками.</span></div></div>
+        <div class="benefit"><svg class="ic"><use href="#i-shield"/></svg><div><b>Доступ редактора</b><span>Роль редактора открывает страницу управления содержимым витрины.</span></div></div>
+      </div>
+    </div>
+    <div class="ab-quote" data-stage style="--d:.4s">
+      <q>Кофе раскрывается дважды: сначала в чашке, потом в памяти о ней.</q>
+      <cite>Каппинг обжарочной · пятница, 09:00</cite>
+    </div>
+  </section>
+
+  <!-- ФОРМА -->
+  <section class="auth-main">
+    <div class="auth-card">
+      <div id="formSide">
+        <div class="card-head" data-stage style="--d:.1s">
+          <span class="eyebrow">Шаг 1 · создание аккаунта</span>
+          <h2>Регистрация</h2>
+          <p>Все поля со звёздочкой обязательны. Пароль проверяется на лету.</p>
+        </div>
+
+        <div class="fprogress" data-stage style="--d:.16s">
+          <div class="fp-bar"><i id="fpBar"></i></div>
+          <span class="fp-num" id="fpNum">0 / 5 заполнено</span>
+        </div>
+
+        <form class="reg" id="regForm" novalidate data-stage style="--d:.22s">
+          <div class="form-alert" id="formAlert" role="alert"><svg class="ic"><use href="#i-alert"/></svg><span id="alertText"></span></div>
+
+          <div class="field" id="fName">
+            <label for="name">Имя <i>*</i></label>
+            <div class="inp-wrap">
+              <input class="inp" id="name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" aria-describedby="nameBad">
+              <svg class="ic lead"><use href="#i-user"/></svg>
+              <svg class="ic mark ok"><use href="#i-check"/></svg>
+              <svg class="ic mark bad"><use href="#i-alert"/></svg>
+            </div>
+            <span class="msg bad" id="nameBad"><svg class="ic"><use href="#i-alert"/></svg>Минимум 2 символа — так подписываются дегустационные листы.</span>
+          </div>
+
+          <div class="field" id="fEmail">
+            <label for="email">Электронная почта <i>*</i></label>
+            <div class="inp-wrap">
+              <input class="inp" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="emailBad emailWarn">
+              <svg class="ic lead"><use href="#i-mail"/></svg>
+              <svg class="ic mark ok"><use href="#i-check"/></svg>
+              <svg class="ic mark bad"><use href="#i-alert"/></svg>
+            </div>
+            <span class="msg bad" id="emailBad"><svg class="ic"><use href="#i-alert"/></svg>Проверьте адрес: нужен формат name@domain.ru.</span>
+            <span class="msg warn" id="emailWarn"><svg class="ic"><use href="#i-info"/></svg><span>Этот адрес уже зарегистрирован в этом браузере. <a class="link" href="login.html">Войти</a>?</span></span>
+          </div>
+
+          <div class="field" id="fPass">
+            <label for="password">Пароль <i>*</i></label>
+            <div class="inp-wrap">
+              <input class="inp" id="password" name="password" type="password" autocomplete="new-password" placeholder="Минимум 8 символов" aria-describedby="passBad reqs">
+              <svg class="ic lead"><use href="#i-lock"/></svg>
+              <button class="trail" type="button" data-toggle="password" aria-label="Показать пароль" aria-pressed="false"><svg class="ic"><use href="#i-eye"/></svg></button>
+            </div>
+            <span class="caps" id="caps"><svg class="ic"><use href="#i-alert"/></svg>Включён Caps Lock</span>
+            <div class="strength" id="strength" style="--lvl:var(--danger)">
+              <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <div class="s-row"><span>Надёжность пароля</span><b id="sLabel">—</b></div>
+              <div class="reqs" id="reqs">
+                <span class="req" data-req="len"><svg class="ic"><use href="#i-check"/></svg>8 символов и больше</span>
+                <span class="req" data-req="case"><svg class="ic"><use href="#i-check"/></svg>Строчная и заглавная</span>
+                <span class="req" data-req="digit"><svg class="ic"><use href="#i-check"/></svg>Хотя бы одна цифра</span>
+                <span class="req opt" data-req="sym"><svg class="ic"><use href="#i-check"/></svg>Спецсимвол — усиливает</span>
+              </div>
+            </div>
+            <span class="msg bad" id="passBad"><svg class="ic"><use href="#i-alert"/></svg>Нужно 8+ символов, буквы обоих регистров и цифра.</span>
+          </div>
+
+          <div class="field" id="fPass2">
+            <label for="password2">Повторите пароль <i>*</i></label>
+            <div class="inp-wrap">
+              <input class="inp" id="password2" name="password2" type="password" autocomplete="new-password" placeholder="Ещё раз, без опечаток" aria-describedby="pass2Bad pass2Ok">
+              <svg class="ic lead"><use href="#i-lock"/></svg>
+              <button class="trail" type="button" data-toggle="password2" aria-label="Показать пароль" aria-pressed="false"><svg class="ic"><use href="#i-eye"/></svg></button>
+            </div>
+            <span class="msg bad" id="pass2Bad"><svg class="ic"><use href="#i-alert"/></svg>Пароли не совпадают.</span>
+            <span class="msg ok" id="pass2Ok"><svg class="ic"><use href="#i-check"/></svg>Пароли совпадают.</span>
+          </div>
+
+          <label class="check" id="fTerms">
+            <input type="checkbox" id="terms" name="terms">
+            <span class="box"><svg class="ic"><use href="#i-check"/></svg></span>
+            <span><b>Принимаю условия</b> обработки данных и правила витрины: один аккаунт на человека, без автоматической выгрузки каталога.</span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="newsletter" name="newsletter" checked>
+            <span class="box"><svg class="ic"><use href="#i-check"/></svg></span>
+            <span>Присылать письма обжарочной: новые лоты, изменения цен и рецепты — раз в две недели.</span>
+          </label>
+
+          <div class="submit-row">
+            <button class="btn btn-block" type="submit" id="submitBtn"><span id="btnLabel">Создать аккаунт</span><svg class="ic" id="btnIcon"><use href="#i-arr"/></svg></button>
+            <span class="form-note">Пароль не покидает страницу в открытом виде</span>
+          </div>
+
+          <p class="alt">Уже есть аккаунт? <a class="link" href="login.html">Войти</a></p>
+        </form>
+      </div>
+
+      <!-- УСПЕХ -->
+      <div class="done" id="done" role="status">
+        <div class="seal"><svg class="ic"><use href="#i-check"/></svg></div>
+        <h3 id="doneTitle">Аккаунт создан</h3>
+        <p>Профиль заведён. Дальше — вход и перенос избранного в кабинет.</p>
+        <div class="summary">
+          <div><span>Имя</span><b id="sumName">—</b></div>
+          <div><span>Почта</span><b id="sumEmail">—</b></div>
+          <div><span>Рассылка</span><b id="sumNews">—</b></div>
+          <div><span>Создан</span><b id="sumDate">—</b></div>
+        </div>
+        <div class="mode-note" id="modeNote"><svg class="ic"><use href="#i-info"/></svg><span id="modeText"></span></div>
+        <div class="done-act">
+          <a class="btn" href="login.html"><svg class="ic"><use href="#i-user"/></svg>Перейти ко входу</a>
+          <a class="btn btn-ghost" href="index.html"><svg class="ic"><use href="#i-cup"/></svg>К витрине</a>
+        </div>
+        <button class="btn btn-dark btn-sm" type="button" id="againBtn">Завести ещё один аккаунт</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="sf">
+  <div class="wrap">
+    <div class="sf-grid">
+      <div>
+        <a class="logo" href="index.html"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+        <p>Витрина спешелти-кофе: происхождение, обжарка и точные составы напитков.</p>
+      </div>
+      <div>
+        <h4>Витрина</h4>
+        <ul>
+          <li><a href="index.html#varieties">Сорта и микролоты</a></li>
+          <li><a href="index.html#drinks">Напитки и рецепты</a></li>
+          <li><a href="index.html#journey">Путь зерна</a></li>
+          <li><a href="index.html#top">Шкала обжарки</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Страницы · 6</h4>
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="login.html">Вход</a></li>
+          <li><a href="register.html"><span class="cur"></span>Регистрация</a></li>
+          <li><a href="profile.html">Личный профиль</a></li>
+          <li><a href="admin.html"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a></li>
+          <li><a href="404.html">Страница 404</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sf-bot"><span>© 2026 CREMA · Обжарочная мастерская</span><span>Поддержка: <a href="mailto:hello@crema.coffee">hello@crema.coffee</a></span></div>
+  </div>
+</footer>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── бесшовный слой зёрен ── */
+(function(){
+  let a=20261126; const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const W=680,pal=['#2a190c','#31200f','#382412','#402a15','#241408','#46301a','#33200e','#2e1c0e'],sc=['.72','.82','.92','1.02','1.12'];
+  const beans=[],cell=W/9;
+  for(let gy=0;gy<9;gy++)for(let gx=0;gx<9;gx++){
+    const cx=gx*cell+cell/2+(rnd()*44-22),cy=gy*cell+cell/2+(rnd()*44-22);
+    beans.push([cx,cy,Math.floor(rnd()*180),sc[Math.floor(rnd()*5)],pal[Math.floor(rnd()*8)]]);
+    if(rnd()<.42)beans.push([cx+(rnd()*60-30),cy+(rnd()*60-30),Math.floor(rnd()*180),sc[Math.floor(rnd()*3)],pal[Math.floor(rnd()*8)]]);
+  }
+  let u='';
+  beans.forEach(([x,y,r,s,c])=>{for(const dx of[-W,0,W])for(const dy of[-W,0,W]){const X=x+dx,Y=y+dy;
+    if(X>-42&&X<W+42&&Y>-42&&Y<W+42)u+=`<use href='#b' transform='translate(${Math.round(X)},${Math.round(Y)})rotate(${r})scale(${s})' color='${c}'/>`;}});
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='680' height='680'><defs><radialGradient id='s' cx='.36' cy='.32' r='.95'><stop offset='0' stop-color='#fff' stop-opacity='.13'/><stop offset='.55' stop-color='#fff' stop-opacity='0'/><stop offset='1' stop-color='#000' stop-opacity='.4'/></radialGradient><g id='b'><ellipse rx='20' ry='27' fill='currentColor'/><ellipse rx='20' ry='27' fill='url(#s)'/><path d='M0,-24C-7,-9,7,9,0,24' fill='none' stroke='#120a05' stroke-width='4' stroke-linecap='round'/><path d='M3,-21C-3,-8,9,8,3,21' fill='none' stroke='#000' opacity='.22' stroke-width='2'/><ellipse cx='-7' cy='-10' rx='7' ry='10' fill='#fff' opacity='.05'/></g></defs><rect width='680' height='680' fill='#171009'/>${u}</svg>`;
+  document.documentElement.style.setProperty('--beans-tex','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
+})();
+
+/* ── оболочка: шапка, меню, появление блоков ── */
+const sh=$('#sh');
+addEventListener('scroll',()=>sh.classList.toggle('scrolled',scrollY>8),{passive:true});
+sh.classList.toggle('scrolled',scrollY>8);
+const burger=$('#burger'),mmenu=$('#mmenu');
+burger.addEventListener('click',()=>{
+  const open=!document.documentElement.classList.contains('menu-open');
+  document.documentElement.classList.toggle('menu-open',open);
+  document.documentElement.classList.toggle('locked',open);
+  burger.setAttribute('aria-expanded',open); mmenu.setAttribute('aria-hidden',!open);
+});
+$$('#mmenu a').forEach(a=>a.addEventListener('click',()=>{
+  document.documentElement.classList.remove('menu-open','locked');
+  burger.setAttribute('aria-expanded','false'); mmenu.setAttribute('aria-hidden','true');
+}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.documentElement.classList.contains('menu-open'))burger.click();});
+
+/* ── тосты ── */
+function toast(msg,bad){
+  const box=$('#toasts'); while(box.children.length>=3)box.firstChild.remove();
+  const t=document.createElement('div'); t.className='toast'+(bad?' bad':'');
+  t.innerHTML='<svg class="ic"><use href="#i-'+(bad?'alert':'check')+'"/></svg><p></p>';
+  t.querySelector('p').textContent=msg; box.appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300);},4000);
+}
+
+/* ── локальное хранилище профилей ── */
+const KEY='crema-users';
+const readUsers=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
+const writeUsers=u=>{try{localStorage.setItem(KEY,JSON.stringify(u))}catch(e){}};
+
+/* ── поля и валидация ── */
+const F={name:$('#name'),email:$('#email'),pass:$('#password'),pass2:$('#password2'),terms:$('#terms'),news:$('#newsletter')};
+const W={name:$('#fName'),email:$('#fEmail'),pass:$('#fPass'),pass2:$('#fPass2'),terms:$('#fTerms')};
+const touched={};
+const emailRe=/^[^\s@]+@[^\s@]+\.[A-Za-zА-Яа-я]{2,}$/;
+const checks=p=>({len:p.length>=8,case:/[a-zа-яё]/.test(p)&&/[A-ZА-ЯЁ]/.test(p),digit:/\d/.test(p),sym:/[^\w\s]/.test(p)});
+const V={
+  name:()=>F.name.value.trim().length>=2,
+  email:()=>emailRe.test(F.email.value.trim()),
+  pass:()=>{const c=checks(F.pass.value);return c.len&&c.case&&c.digit;},
+  pass2:()=>F.pass2.value.length>0&&F.pass2.value===F.pass.value,
+  terms:()=>F.terms.checked
+};
+function paint(key){
+  const ok=V[key](),w=W[key];
+  if(key==='terms'){w.classList.toggle('invalid',touched.terms&&!ok);return ok;}
+  const empty=F[key==='pass'?'pass':key==='pass2'?'pass2':key].value.length===0;
+  w.classList.toggle('valid',ok);
+  w.classList.toggle('invalid',!!touched[key]&&!ok&&!empty);
+  return ok;
+}
+function progress(){
+  const n=Object.keys(V).filter(k=>V[k]()).length;
+  $('#fpBar').style.width=(n/5*100)+'%';
+  $('#fpNum').textContent=n+' / 5 заполнено';
+}
+function strength(){
+  const p=F.pass.value,c=checks(p);
+  let s=0; if(c.len)s++; if(p.length>=12)s++; if(c.case)s++; if(c.digit)s++; if(c.sym)s++;
+  const lvl=p.length?Math.max(1,Math.min(4,s)):0;
+  const colors=['var(--danger)','var(--danger)','var(--warn)','var(--brass)','var(--ok)'];
+  const labels=['—','Слабый','Средний','Хороший','Надёжный'];
+  $('#strength').style.setProperty('--lvl',colors[lvl]);
+  $('#sLabel').textContent=labels[lvl];
+  $$('#strength .meter i').forEach((el,i)=>el.classList.toggle('on',i<lvl));
+  $$('#reqs .req').forEach(el=>el.classList.toggle('ok',!!c[el.dataset.req]));
+}
+function emailWarn(){
+  const v=F.email.value.trim().toLowerCase();
+  const dup=v&&readUsers().some(u=>u.email===v);
+  $('#emailWarn').classList.toggle('show',!!dup);
+}
+['name','email','pass','pass2'].forEach(k=>{
+  const el=F[k==='pass'?'pass':k==='pass2'?'pass2':k];
+  el.addEventListener('input',()=>{
+    if(k==='pass'){strength();if(F.pass2.value)paint('pass2');}
+    if(k==='email')emailWarn();
+    paint(k);progress();
+  });
+  el.addEventListener('blur',()=>{touched[k]=true;paint(k);});
+});
+F.terms.addEventListener('change',()=>{touched.terms=true;paint('terms');progress();});
+$('#caps')&&['keydown','keyup'].forEach(ev=>F.pass.addEventListener(ev,e=>{
+  $('#caps').classList.toggle('show',e.getModifierState&&e.getModifierState('CapsLock'));
+}));
+F.pass.addEventListener('blur',()=>$('#caps').classList.remove('show'));
+$$('[data-toggle]').forEach(btn=>btn.addEventListener('click',()=>{
+  const inp=document.getElementById(btn.dataset.toggle);
+  const show=inp.type==='password';
+  inp.type=show?'text':'password';
+  btn.setAttribute('aria-pressed',show);
+  btn.setAttribute('aria-label',show?'Скрыть пароль':'Показать пароль');
+  btn.querySelector('use').setAttribute('href',show?'#i-eye-off':'#i-eye');
+  inp.focus();
+}));
+function alertBox(msg){
+  const a=$('#formAlert');
+  if(!msg){a.classList.remove('show');return;}
+  $('#alertText').textContent=msg; a.classList.add('show');
+}
+
+/* ── отправка ── */
+const btn=$('#submitBtn');
+function loading(on){
+  btn.disabled=on;
+  $('#btnLabel').textContent=on?'Создаём аккаунт…':'Создать аккаунт';
+  $('#btnIcon').outerHTML=on?'<span class="spin" id="btnIcon"></span>':'<svg class="ic" id="btnIcon"><use href="#i-arr"/></svg>';
+}
+function finish(mode,data){
+  $('#sumName').textContent=data.name;
+  $('#sumEmail').textContent=data.email;
+  $('#sumNews').textContent=data.newsletter?'подключена':'отключена';
+  $('#sumDate').textContent=new Date().toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  $('#modeText').textContent = mode==='server'
+    ? 'Профиль сохранён на сервере. Войдите, чтобы перенести избранное из браузера в кабинет.'
+    : 'Сервер регистрации пока не подключён, поэтому профиль сохранён локально в этом браузере. Пароль не записывается — при подключении API регистрация повторится на сервере.';
+  $('#doneTitle').textContent = mode==='server'?'Аккаунт создан':'Профиль создан локально';
+  $('#formSide').style.display='none';
+  $('#done').classList.add('show');
+  $('#done').scrollIntoView({block:'center',behavior:reduced?'auto':'smooth'});
+  toast(mode==='server'?'Аккаунт создан на сервере':'Профиль сохранён в этом браузере');
+}
+$('#regForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  ['name','email','pass','pass2','terms'].forEach(k=>touched[k]=true);
+  const bad=['name','email','pass','pass2','terms'].filter(k=>!paint(k));
+  progress();
+  if(bad.length){
+    alertBox(bad.includes('terms')&&bad.length===1?'Отметьте согласие с условиями, чтобы продолжить.':'Проверьте отмеченные поля — '+bad.length+' шт. требуют внимания.');
+    const first=W[bad[0]].querySelector('input');first&&first.focus();
+    return;
+  }
+  alertBox('');
+  const payload={name:F.name.value.trim(),email:F.email.value.trim().toLowerCase(),password:F.pass.value,newsletter:F.news.checked};
+  loading(true);
+  let mode='local';
+  try{
+    const res=await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(res.ok){mode='server';}
+    else if([400,409,422].includes(res.status)){
+      let detail='Сервер отклонил регистрацию. Проверьте данные.';
+      try{const j=await res.json();if(j&&j.detail)detail=typeof j.detail==='string'?j.detail:JSON.stringify(j.detail);}catch(err){}
+      if(res.status===409){W.email.classList.add('invalid');touched.email=true;}
+      alertBox(detail);loading(false);toast('Регистрация отклонена сервером',true);return;
+    }
+  }catch(err){ mode='local'; }
+  if(mode==='local'){
+    const users=readUsers();
+    if(users.some(u=>u.email===payload.email)){
+      W.email.classList.add('invalid');touched.email=true;emailWarn();
+      alertBox('Такой адрес уже заведён в этом браузере. Войдите или укажите другой.');
+      loading(false);toast('Адрес уже используется',true);return;
+    }
+    users.push({name:payload.name,email:payload.email,newsletter:payload.newsletter,createdAt:new Date().toISOString()});
+    writeUsers(users);
+  }
+  loading(false);
+  finish(mode,payload);
+});
+$('#againBtn').addEventListener('click',()=>{
+  $('#regForm').reset();
+  Object.keys(touched).forEach(k=>delete touched[k]);
+  ['name','email','pass','pass2'].forEach(k=>W[k].classList.remove('valid','invalid'));
+  W.terms.classList.remove('invalid');
+  $('#emailWarn').classList.remove('show');alertBox('');strength();progress();
+  $('#done').classList.remove('show');$('#formSide').style.display='';
+  F.name.focus();
+});
+strength();progress();emailWarn();
+})();
+</script>
+</body>
+</html>

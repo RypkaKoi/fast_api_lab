@@ -1,0 +1,562 @@
+<!--
+  profile.html · CREMA — ЛИЧНЫЙ ПРОФИЛЬ (страница 5 из 6)
+  Избранное, дегустационные листы, данные аккаунта и безопасность.
+  Все переходы между страницами ведут на .html-файлы рядом:
+      index.html · login.html · register.html · profile.html · admin.html · 404.html
+  Ресурсы: app.css, app.js (рядом). Сервер: main.py.
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Личный профиль — CREMA</title>
+<meta name="theme-color" content="#0f0c09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z' fill='%23c8a468'/%3E%3Cpath d='M40 8C31 22 49 32 40 46C33 57 46 63 40 72' fill='none' stroke='%230f0c09' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="g-bourbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#a14e2e"/></linearGradient>
+  <linearGradient id="g-arabica" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#7d5a33"/></linearGradient>
+  <linearGradient id="g-robusta" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3322"/><stop offset="1" stop-color="#1c1109"/></linearGradient>
+  <linearGradient id="g-liberica" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a14e2e"/><stop offset="1" stop-color="#5a3320"/></linearGradient>
+  <linearGradient id="g-excelsa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#75855a"/><stop offset="1" stop-color="#3d3820"/></linearGradient>
+  <linearGradient id="g-geisha" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efe6d4"/><stop offset="1" stop-color="#c8a468"/></linearGradient>
+  <pattern id="pat-foam" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="#d9c6a2" opacity=".7"/></pattern>
+  <pattern id="pat-ice" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 10L10 -2" stroke="#fff" stroke-width="2" opacity=".5"/></pattern>
+</defs>
+  <symbol id="bean-fill" viewBox="0 0 80 80"><path d="M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z"/><path d="M40 8C31 22 49 32 40 46C33 57 46 63 40 72" fill="none" stroke="rgba(15,8,4,.45)" stroke-width="4.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.2v.6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.3-3.6 4.1-5.5 7.5-5.5s6.2 1.9 7.5 5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v6c0 4.4-3.1 7.9-7.5 9-4.4-1.1-7.5-4.6-7.5-9V6L12 3Z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11V21L12 16.6 6.5 21V3.5Z"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7.5 5.5c0-1 .8-1.2.8-2M11.5 5.5c0-1 .8-1.2.8-2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-5.8-7-11a7 7 0 0 1 14 0c0 5.2-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-mtn" viewBox="0 0 24 24"><path d="M3 19L9.5 7l3.4 6.1L15 9l6 10Z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2Z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9 2.9-6Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15M9 6V4.5h6V6M6.5 6.5l1 13h9l1-13M10 10.5v6M14 10.5v6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-arr" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-.7 4.5"/><path d="M20 4.5V11h-6.5"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.3" fill="currentColor"/><circle cx="15" cy="6" r="1.3" fill="currentColor"/><circle cx="9" cy="12" r="1.3" fill="currentColor"/><circle cx="15" cy="12" r="1.3" fill="currentColor"/><circle cx="9" cy="18" r="1.3" fill="currentColor"/><circle cx="15" cy="18" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="M14.5 5.5l4 4"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M17 8.5l3.5 3.5L17 15.5M20 12h-9"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+</svg>
+
+<div class="ap-bg" aria-hidden="true"></div>
+<div class="ap-scrim" aria-hidden="true"></div>
+
+<header class="sh" id="sh">
+  <div class="sh-in">
+    <a class="logo" href="index.html"><svg viewBox="0 0 80 80"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+    <nav class="sh-nav">
+      <a href="index.html">Витрина</a><a href="index.html#varieties">Сорта</a><a href="index.html#drinks">Напитки</a>
+      <a href="profile.html" class="active">Профиль</a><a href="admin.html">Управление</a>
+    </nav>
+    <div class="sh-act">
+      <span class="avatar" id="topAva">C</span>
+      <button class="btn btn-ghost btn-sm" type="button" id="topOut"><svg class="ic"><use href="#i-out"/></svg>Выйти</button>
+      <button id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <a class="m-link" href="index.html">Витрина <small>01</small></a>
+  <a class="m-link" href="index.html#varieties">Сорта <small>02</small></a>
+  <a class="m-link" href="profile.html">Профиль <small>05</small></a>
+  <a class="m-link" href="admin.html">Управление <small>06</small></a>
+  <div class="m-auth">
+    <button class="btn btn-ghost" type="button" id="mOut">Выйти</button>
+    <a class="btn" href="index.html">К витрине</a>
+  </div>
+</div>
+
+<main class="pf-page">
+  <div class="wrap">
+
+    <section class="pf-hero panel" id="hero">
+      <div class="pf-ava" id="ava">C</div>
+      <div class="pf-id">
+        <span class="eyebrow">Личный кабинет</span>
+        <h1 id="uName">Загружаем профиль…</h1>
+        <div class="meta">
+          <span id="uEmail">—</span><span id="uSince">—</span>
+          <span class="badge" id="uRole">читатель</span>
+          <span class="badge info" id="uMode">локальный режим</span>
+        </div>
+      </div>
+      <div class="pf-hero-act">
+        <a class="btn btn-ghost btn-sm" href="index.html"><svg class="ic"><use href="#i-cup"/></svg>К витрине</a>
+        <a class="btn btn-sm" href="admin.html" id="toAdmin"><svg class="ic"><use href="#i-edit"/></svg>Управление витриной</a>
+      </div>
+    </section>
+
+    <section class="pf-stats" id="stats"></section>
+
+    <div class="pf-tabs" role="tablist">
+      <button class="pf-tab on" data-tab="fav" role="tab"><svg class="ic"><use href="#i-bookmark"/></svg>Избранное <span class="n" id="nFav">0</span></button>
+      <button class="pf-tab" data-tab="lists" role="tab"><svg class="ic"><use href="#i-cup"/></svg>Дегустационные листы <span class="n" id="nLists">0</span></button>
+      <button class="pf-tab" data-tab="acc" role="tab"><svg class="ic"><use href="#i-user"/></svg>Аккаунт</button>
+      <button class="pf-tab" data-tab="sec" role="tab"><svg class="ic"><use href="#i-shield"/></svg>Безопасность</button>
+    </div>
+
+    <!-- ИЗБРАННОЕ -->
+    <section class="pf-pane on" id="pane-fav">
+      <div class="pf-bar">
+        <div class="ad-search grow"><svg class="ic"><use href="#i-grid"/></svg><input id="favQ" type="search" placeholder="Поиск по избранному: гейша, Панама, раф…" aria-label="Поиск по избранному"></div>
+        <div class="ad-chips" id="favChips">
+          <button class="chip on" data-k="all">Все <span class="n"></span></button>
+          <button class="chip" data-k="v">Сорта <span class="n"></span></button>
+          <button class="chip" data-k="d">Напитки <span class="n"></span></button>
+        </div>
+        <select class="inp" id="favSort" style="width:auto;height:40px" aria-label="Сортировка избранного">
+          <option value="added">По порядку добавления</option>
+          <option value="name">По названию</option>
+          <option value="price-desc">Цена: дороже</option>
+          <option value="price-asc">Цена: дешевле</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" id="syncBtn"><svg class="ic"><use href="#i-sync"/></svg>Синхронизировать</button>
+      </div>
+      <div class="pf-grid" id="favGrid"></div>
+      <div class="empty" id="favEmpty" hidden>
+        <svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#b4a691"/></svg>
+        <b>Избранное пусто</b>
+        <p>Отмечайте сорта и напитки закладкой на витрине — они появятся здесь и переедут в кабинет после синхронизации.</p>
+        <a class="btn btn-sm" href="index.html#varieties"><svg class="ic"><use href="#i-arr"/></svg>Открыть каталог</a>
+      </div>
+    </section>
+
+    <!-- ЛИСТЫ -->
+    <section class="pf-pane" id="pane-lists">
+      <div class="pf-bar">
+        <div class="grow"><span class="mono" style="font-size:11.5px;color:var(--milk-soft)">Подборки под способ заваривания. Перетаскивайте позиции внутри листа, чтобы задать порядок дегустации.</span></div>
+        <button class="btn btn-sm" id="newList"><svg class="ic"><use href="#i-plus"/></svg>Новый лист</button>
+      </div>
+      <div class="lst-grid" id="listGrid"></div>
+      <div class="empty" id="listEmpty" hidden>
+        <svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#b4a691"/></svg>
+        <b>Листов пока нет</b>
+        <p>Соберите первую подборку: например «Фильтр на выходные» из трёх сортов с яркой кислотностью.</p>
+        <button class="btn btn-sm" type="button" id="newList2"><svg class="ic"><use href="#i-plus"/></svg>Создать лист</button>
+      </div>
+    </section>
+
+    <!-- АККАУНТ -->
+    <section class="pf-pane" id="pane-acc">
+      <div class="pf-sec">
+        <form class="pf-form panel" id="accForm">
+          <h3>Данные аккаунта</h3>
+          <div class="field"><label for="fName">Имя</label><input class="inp" id="fName" type="text" autocomplete="name"></div>
+          <div class="field"><label for="fEmail">Электронная почта</label><input class="inp" id="fEmail" type="email" autocomplete="email"><span class="hint">Используется как логин на странице входа.</span></div>
+          <label class="check"><input type="checkbox" id="fNews"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><span>Письма обжарочной: новые лоты, цены и рецепты раз в две недели.</span></label>
+          <button class="btn" type="submit" id="accSave"><svg class="ic"><use href="#i-check"/></svg>Сохранить изменения</button>
+        </form>
+        <div class="pf-form panel">
+          <h3>Хранилище избранного</h3>
+          <p style="font-size:13.5px;color:var(--milk-soft)">Витрина хранит закладки в браузере. Синхронизация переносит их в профиль, чтобы список открывался с любого устройства.</p>
+          <div class="sess-row"><svg class="ic"><use href="#i-bookmark"/></svg><div><b id="locCount">0 в браузере</b><small>localStorage · crema-favs</small></div></div>
+          <div class="sess-row"><svg class="ic"><use href="#i-shield"/></svg><div><b id="srvCount">0 в профиле</b><small id="srvHint">серверная запись</small></div></div>
+          <button class="btn btn-ghost" type="button" id="syncBtn2"><svg class="ic"><use href="#i-sync"/></svg>Перенести в кабинет</button>
+          <button class="btn btn-danger btn-sm" type="button" id="clearFav"><svg class="ic"><use href="#i-trash"/></svg>Очистить избранное</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- БЕЗОПАСНОСТЬ -->
+    <section class="pf-pane" id="pane-sec">
+      <div class="pf-sec">
+        <form class="pf-form panel" id="pwForm">
+          <h3>Смена пароля</h3>
+          <div class="field"><label for="pwOld">Текущий пароль</label><input class="inp" id="pwOld" type="password" autocomplete="current-password"></div>
+          <div class="field"><label for="pwNew">Новый пароль</label><input class="inp" id="pwNew" type="password" autocomplete="new-password">
+            <div class="meter" id="pwMeter" style="--lvl:var(--danger)"><i></i><i></i><i></i><i></i></div>
+            <div class="reqs" id="pwReqs">
+              <span class="req" data-r="len"><svg class="ic"><use href="#i-check"/></svg>8+ символов</span>
+              <span class="req" data-r="case"><svg class="ic"><use href="#i-check"/></svg>Оба регистра</span>
+              <span class="req" data-r="digit"><svg class="ic"><use href="#i-check"/></svg>Цифра</span>
+              <span class="req" data-r="sym"><svg class="ic"><use href="#i-check"/></svg>Спецсимвол</span>
+            </div>
+          </div>
+          <div class="field"><label for="pwRep">Повторите новый пароль</label><input class="inp" id="pwRep" type="password" autocomplete="new-password"></div>
+          <button class="btn" type="submit" id="pwSave"><svg class="ic"><use href="#i-lock"/></svg>Обновить пароль</button>
+        </form>
+        <div class="pf-form panel">
+          <h3>Сессии</h3>
+          <div class="sess" id="sessList"></div>
+          <button class="btn btn-danger" type="button" id="killSess"><svg class="ic"><use href="#i-out"/></svg>Завершить все сессии</button>
+          <div class="ed-note"><svg class="ic"><use href="#i-shield"/></svg><span>Пароль хранится как PBKDF2-хэш с индивидуальной солью. Сессия подписана HMAC и записана в httpOnly-cookie.</span></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="sf">
+  <div class="wrap">
+    <div class="sf-grid">
+      <div>
+        <a class="logo" href="index.html"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+        <p>Витрина спешелти-кофе: происхождение, обжарка и точные составы напитков.</p>
+      </div>
+      <div>
+        <h4>Витрина</h4>
+        <ul>
+          <li><a href="index.html#varieties">Сорта и микролоты</a></li>
+          <li><a href="index.html#drinks">Напитки и рецепты</a></li>
+          <li><a href="index.html#journey">Путь зерна</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Страницы · 6</h4>
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="login.html">Вход</a></li>
+          <li><a href="register.html">Регистрация</a></li>
+          <li><a href="profile.html"><span class="cur"></span>Личный профиль</a></li>
+          <li><a href="admin.html"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a></li>
+          <li><a href="404.html">Страница 404</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sf-bot"><span>© 2026 CREMA · Обжарочная мастерская</span><span><a href="mailto:hello@crema.coffee">hello@crema.coffee</a></span></div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head"><h3 id="drTitle">Лист</h3><button class="iconbtn" id="drClose" aria-label="Закрыть"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div class="drawer-body" id="drBody"></div>
+  <div class="drawer-foot"><button class="btn btn-ghost" type="button" id="drCancel">Отмена</button><button class="btn" type="button" id="drSave"><svg class="ic"><use href="#i-check"/></svg>Сохранить</button></div>
+</aside>
+<div id="toasts" aria-live="polite"></div>
+
+<script src="app.js"></script>
+<script>
+(function(){
+'use strict';
+const C=window.CREMA,{$,$$,esc,fmt,store,api,toast,clone,plural}=C;
+C.shell();
+
+const S={me:null,mode:'local',cat:{varieties:[],drinks:[]},favs:[],lists:[],tab:'fav',q:'',kind:'all',sort:'added',editing:null};
+
+/* ── профиль: сервер или локальный ── */
+async function boot(){
+  S.cat=await C.loadCatalog();
+  try{
+    const me=await api('/api/me');
+    if(me&&me.authenticated){
+      S.me=me;S.mode='server';
+      S.favs=Array.isArray(me.favorites)?me.favorites.slice():[];
+      S.lists=Array.isArray(me.lists)?me.lists:[];
+    }
+  }catch(e){}
+  if(!S.me){
+    const users=store.get('crema-users',[]);
+    const local=store.get('crema-profile',null);
+    const u=local||users[0]||{name:'Гость обжарочной',email:'guest@crema.coffee',newsletter:true,createdAt:new Date().toISOString()};
+    S.me={name:u.name,email:u.email,newsletter:u.newsletter!==false,created_at:u.createdAt||new Date().toISOString(),role:'editor'};
+    S.mode='local';
+    S.favs=store.get('crema-favs',[]);
+    S.lists=store.get('crema-lists',seedLists());
+  }
+  // локальные закладки всегда предлагаем объединить
+  const loc=store.get('crema-favs',[]);
+  if(S.mode==='server'&&loc.length){
+    const merged=Array.from(new Set(S.favs.concat(loc)));
+    if(merged.length!==S.favs.length){S.favs=merged;persistFavs();toast('Закладки браузера объединены с профилем: '+merged.length);}
+  }
+  paint();
+}
+function seedLists(){
+  return [{id:C.uid('lst'),name:'Фильтр на выходные',method:'V60',note:'Три лота с яркой кислотностью — сравниваем на одном помоле.',items:['v:geisha','v:arabica','v:bourbon'],created_at:new Date().toISOString()},
+          {id:C.uid('lst'),name:'Молочная база',method:'Эспрессо',note:'Что держит молоко и не теряется в сладости.',items:['v:bourbon','v:robusta','d:flatwhite'],created_at:new Date().toISOString()}];
+}
+function persistFavs(){
+  store.set('crema-favs',S.favs);
+  if(S.mode==='server')api('/api/me/favorites','POST',{favorites:S.favs}).catch(()=>{});
+}
+function persistLists(){
+  store.set('crema-lists',S.lists);
+  if(S.mode==='server')api('/api/me/lists/bulk','POST',{lists:S.lists}).catch(()=>{});
+}
+
+/* ── отрисовка ── */
+function paint(){
+  const m=S.me;
+  const ini=(m.name||'C').trim().charAt(0).toUpperCase();
+  $('#ava').textContent=ini;$('#topAva').textContent=ini;
+  $('#uName').textContent=m.name;
+  $('#uEmail').textContent=m.email;
+  $('#uSince').textContent='в обжарочной с '+new Date(m.created_at||Date.now()).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
+  const role=$('#uRole');role.textContent=m.role==='editor'?'редактор':'читатель';
+  role.className='badge '+(m.role==='editor'?'ok':'');
+  const mode=$('#uMode');mode.textContent=S.mode==='server'?'серверный профиль':'локальный режим';
+  mode.className='badge '+(S.mode==='server'?'ok':'warn');
+  $('#toAdmin').style.display=m.role==='editor'?'':'none';
+  $('#nFav').textContent=S.favs.length;$('#nLists').textContent=S.lists.length;
+  $('#locCount').textContent=store.get('crema-favs',[]).length+' в браузере';
+  $('#srvCount').textContent=S.favs.length+' в профиле';
+  $('#srvHint').textContent=S.mode==='server'?'users.json · favorites':'localStorage · crema-favs';
+  $('#fName').value=m.name;$('#fEmail').value=m.email;$('#fNews').checked=!!m.newsletter;
+  stats();favChips();renderFav();renderLists();renderSess();
+}
+function resolved(){return S.favs.map(k=>{const r=C.findItem(S.cat,k);return r?{key:k,kind:r.kind,item:r.item}:null;}).filter(Boolean);}
+function stats(){
+  const r=resolved(),vs=r.filter(x=>x.kind==='v'),ds=r.filter(x=>x.kind==='d');
+  const avg=vs.length?(vs.reduce((s,x)=>s+(x.item.rating||0),0)/vs.length):0;
+  const price=r.reduce((s,x)=>s+(x.item.price||0),0);
+  const methods={};vs.forEach(x=>(x.item.brew||[]).forEach(b=>methods[b]=(methods[b]||0)+1));
+  const top=Object.keys(methods).sort((a,b)=>methods[b]-methods[a])[0]||'—';
+  const cards=[['Избранное',r.length,'сортов и напитков'],['Сорта',vs.length,'зерно в закладках'],['Напитки',ds.length,'карты меню'],['Средняя оценка',avg?avg.toFixed(2):'—','по избранным сортам'],['Способ №1',top,'чаще всего в подборках']];
+  $('#stats').innerHTML=cards.map(([t,v,s])=>`<div class="pf-stat panel"><span>${esc(t)}</span><b>${esc(String(v))}</b><i>${esc(s)}</i></div>`).join('');
+}
+function favChips(){
+  const r=resolved();
+  $$('#favChips .chip').forEach(c=>{const k=c.dataset.k;c.querySelector('.n').textContent=k==='all'?r.length:r.filter(x=>x.kind===k).length;});
+}
+function renderFav(){
+  const q=S.q.trim().toLowerCase();
+  let r=resolved().filter(x=>(S.kind==='all'||x.kind===S.kind)&&(!q||JSON.stringify(x.item).toLowerCase().includes(q)));
+  if(S.sort==='name')r.sort((a,b)=>a.item.name.localeCompare(b.item.name,'ru'));
+  if(S.sort==='price-desc')r.sort((a,b)=>(b.item.price||0)-(a.item.price||0));
+  if(S.sort==='price-asc')r.sort((a,b)=>(a.item.price||0)-(b.item.price||0));
+  $('#favEmpty').hidden=r.length>0;
+  $('#favGrid').innerHTML=r.map(x=>{
+    const it=x.item,isV=x.kind==='v';
+    const head=isV?C.beanSVG(it.grad,it.rot):C.glassSVG(it.layers);
+    return `<article class="fav-card panel" data-key="${esc(x.key)}">
+      <div class="fc-top"><span class="tag ${isV?esc(it.tone||'tag-brass'):'tag-dark'}">${isV?'Сорт':'Напиток'}</span>
+        <button class="iconbtn danger" data-del="${esc(x.key)}" aria-label="Убрать из избранного"><svg class="ic"><use href="#i-trash"/></svg></button></div>
+      <div class="fc-id">${head}<div><h3>${esc(it.name)}</h3><small>${esc(isV?it.latin:it.vol+' мл · '+it.time)}</small></div></div>
+      <div class="fc-meta">${isV?`<div>${C.ic('pin')}${esc(it.origin)} · ${esc(it.region)}</div><div>${C.ic('bolt')}кофеин ${(it.caff||0).toFixed(1)}% · ${esc(it.roast)}</div>`
+        :`<div>${C.ic('cup')}${esc(it.temp)} · крепость ${it.str}/5</div><div>${C.ic('bolt')}${it.caff} мг кофеина</div>`}</div>
+      <div class="fc-foot"><span class="fc-price">${fmt(it.price)} ₽</span>
+        <button class="btn btn-ghost btn-xs" data-add="${esc(x.key)}"><svg class="ic"><use href="#i-plus"/></svg>В лист</button></div></article>`;
+  }).join('');
+}
+function renderLists(){
+  $('#listEmpty').hidden=S.lists.length>0;
+  $('#listGrid').innerHTML=S.lists.map(l=>{
+    const dots=l.items.slice(0,6).map(k=>{const r=C.findItem(S.cat,k);if(!r)return '';
+      return `<span class="lst-dot">${r.kind==='v'?'<svg viewBox="0 0 80 80" style="fill:#c8a468"><use href="#bean-fill"/></svg>':C.ic('cup')}</span>`;}).join('');
+    return `<article class="lst-card panel" data-list="${esc(l.id)}">
+      <span class="m">${esc(l.method||'любой способ')}</span>
+      <h3>${esc(l.name)}</h3><p>${esc(l.note||'Без описания')}</p>
+      <div class="lst-dots">${dots}${l.items.length>6?`<span class="lst-dot mono" style="font-size:9px">+${l.items.length-6}</span>`:''}</div>
+      <div class="lst-foot"><span>${l.items.length} ${plural(l.items.length,['позиция','позиции','позиций'])}</span>
+        <button class="iconbtn danger" data-dellist="${esc(l.id)}" aria-label="Удалить лист"><svg class="ic"><use href="#i-trash"/></svg></button></div></article>`;
+  }).join('');
+}
+function renderSess(){
+  const now=new Date();
+  const exp=new Date(Date.now()+7*864e5);
+  $('#sessList').innerHTML=`
+    <div class="sess-row">${C.ic('shield')}<div><b>Это устройство · ${esc(navigator.platform||'браузер')}</b><small>активна сейчас · до ${exp.toLocaleDateString('ru-RU')}</small></div><span class="badge ok">текущая</span></div>
+    <div class="sess-row">${C.ic('lock')}<div><b>Cookie crema_session</b><small>${S.mode==='server'?'HMAC-подпись, httpOnly, SameSite=Lax':'локальный режим — cookie не используется'}</small></div></div>
+    <div class="sess-row">${C.ic('user')}<div><b>Последнее обновление профиля</b><small>${now.toLocaleString('ru-RU')}</small></div></div>`;
+}
+
+/* ── вкладки ── */
+$$('.pf-tab').forEach(t=>t.addEventListener('click',()=>{
+  S.tab=t.dataset.tab;
+  $$('.pf-tab').forEach(x=>x.classList.toggle('on',x===t));
+  $$('.pf-pane').forEach(p=>p.classList.toggle('on',p.id==='pane-'+S.tab));
+}));
+$('#favQ').addEventListener('input',e=>{S.q=e.target.value;renderFav();});
+$('#favSort').addEventListener('change',e=>{S.sort=e.target.value;renderFav();});
+$('#favChips').addEventListener('click',e=>{const c=e.target.closest('[data-k]');if(!c)return;
+  S.kind=c.dataset.k;$$('#favChips .chip').forEach(x=>x.classList.toggle('on',x===c));renderFav();});
+
+/* ── избранное: удаление с отменой, добавление в лист ── */
+$('#favGrid').addEventListener('click',e=>{
+  const del=e.target.closest('[data-del]');
+  if(del){
+    const key=del.dataset.del,idx=S.favs.indexOf(key);
+    if(idx<0)return;
+    S.favs.splice(idx,1);persistFavs();paint();
+    toast('Убрано из избранного',{label:'Отменить',fn:()=>{S.favs.splice(idx,0,key);persistFavs();paint();}});
+    return;
+  }
+  const add=e.target.closest('[data-add]');
+  if(add)openPicker(add.dataset.add);
+});
+$('#clearFav').addEventListener('click',()=>{
+  if(!S.favs.length)return;
+  const prev=S.favs.slice();S.favs=[];persistFavs();paint();
+  toast('Избранное очищено',{label:'Отменить',fn:()=>{S.favs=prev;persistFavs();paint();}});
+});
+function sync(){
+  const loc=store.get('crema-favs',[]);
+  const merged=Array.from(new Set(S.favs.concat(loc)));
+  S.favs=merged;persistFavs();paint();
+  toast('Синхронизировано: '+merged.length+' '+plural(merged.length,['позиция','позиции','позиций']));
+}
+$('#syncBtn').addEventListener('click',sync);
+$('#syncBtn2').addEventListener('click',sync);
+
+/* ── листы ── */
+function openList(id){
+  const l=id?S.lists.find(x=>x.id===id):null;
+  S.editing=l?clone(l):{id:C.uid('lst'),name:'',method:'V60',note:'',items:[],created_at:new Date().toISOString(),isNew:true};
+  $('#drTitle').textContent=l?'Лист дегустации':'Новый лист';
+  drawListEditor();
+  $('#drawer').classList.add('open');$('#scrim').classList.add('open');
+  $('#drawer').setAttribute('aria-hidden','false');document.documentElement.classList.add('locked');
+}
+function drawListEditor(){
+  const d=S.editing;
+  const opts=C.METHODS.map(m=>`<option${m===d.method?' selected':''}>${esc(m)}</option>`).join('');
+  const rows=d.items.map((k,i)=>{const r=C.findItem(S.cat,k);if(!r)return '';
+    return `<div class="ord-row" draggable="true" data-i="${i}"><svg class="ic grip"><use href="#i-grip"/></svg><b>${esc(r.item.name)}</b>
+      <small class="mono" style="font-size:10px;color:var(--milk-soft)">${r.kind==='v'?'сорт':'напиток'}</small>
+      <button class="iconbtn danger" data-rm="${i}" aria-label="Убрать"><svg class="ic"><use href="#i-x"/></svg></button></div>`;}).join('');
+  const avail=resolved().filter(x=>!d.items.includes(x.key));
+  $('#drBody').innerHTML=`
+    <div class="ed-sec">Название и способ</div>
+    <div class="ed-grid">
+      <div class="field"><label for="lName">Название листа</label><input class="inp" id="lName" value="${esc(d.name)}" placeholder="Фильтр на выходные"></div>
+      <div class="field"><label for="lMethod">Способ заваривания</label><select class="inp" id="lMethod">${opts}</select></div>
+      <div class="field"><label for="lNote">Заметка</label><textarea class="inp" id="lNote" placeholder="Что сравниваем и на что смотрим">${esc(d.note)}</textarea></div>
+    </div>
+    <div class="ed-sec">Порядок дегустации · перетащите</div>
+    <div class="ord" id="ord">${rows||'<p style="font-size:13px;color:var(--milk-soft)">Пока пусто — добавьте позиции ниже.</p>'}</div>
+    <div class="ed-sec">Добавить из избранного</div>
+    <div class="pick" id="pick">${avail.map(x=>`<div class="pick-row" data-pick="${esc(x.key)}"><b>${esc(x.item.name)}</b><small>${x.kind==='v'?'сорт':'напиток'}</small>${C.ic('plus')}</div>`).join('')||'<p style="font-size:13px;color:var(--milk-soft)">Всё избранное уже в листе.</p>'}</div>`;
+  const nameEl=$('#lName');nameEl.addEventListener('input',e=>d.name=e.target.value);
+  $('#lMethod').addEventListener('change',e=>d.method=e.target.value);
+  $('#lNote').addEventListener('input',e=>d.note=e.target.value);
+  $('#pick').addEventListener('click',e=>{const p=e.target.closest('[data-pick]');if(!p)return;d.items.push(p.dataset.pick);drawListEditor();});
+  $('#ord').addEventListener('click',e=>{const b=e.target.closest('[data-rm]');if(!b)return;d.items.splice(+b.dataset.rm,1);drawListEditor();});
+  dragOrder($('#ord'),d.items,drawListEditor);
+}
+function dragOrder(box,arr,after){
+  if(!box)return;let from=null;
+  box.querySelectorAll('[draggable="true"]').forEach(row=>{
+    row.addEventListener('dragstart',e=>{from=+row.dataset.i;row.classList.add('drag');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',String(from));}catch(err){}});
+    row.addEventListener('dragend',()=>{row.classList.remove('drag');box.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));});
+    row.addEventListener('dragover',e=>{e.preventDefault();row.classList.add('over');});
+    row.addEventListener('dragleave',()=>row.classList.remove('over'));
+    row.addEventListener('drop',e=>{e.preventDefault();row.classList.remove('over');
+      const to=+row.dataset.i;if(from===null||from===to)return;
+      const [m]=arr.splice(from,1);arr.splice(to,0,m);from=null;after();});
+  });
+}
+function openPicker(key){
+  if(!S.lists.length){toast('Сначала создайте лист',null,true);openList(null);return;}
+  S.editing={picker:key};
+  $('#drTitle').textContent='Добавить в лист';
+  $('#drBody').innerHTML='<div class="ed-sec">Выберите лист</div><div class="pick">'+
+    S.lists.map(l=>`<div class="pick-row" data-into="${esc(l.id)}"><b>${esc(l.name)}</b><small>${l.items.length} поз.</small>${C.ic('plus')}</div>`).join('')+'</div>';
+  $('#drBody').addEventListener('click',e=>{
+    const p=e.target.closest('[data-into]');if(!p)return;
+    const l=S.lists.find(x=>x.id===p.dataset.into);
+    if(l.items.includes(key)){toast('Уже в этом листе',null,true);return;}
+    l.items.push(key);persistLists();paint();closeDrawer();toast('Добавлено в «'+l.name+'»');
+  },{once:true});
+  $('#drawer').classList.add('open');$('#scrim').classList.add('open');document.documentElement.classList.add('locked');
+}
+function closeDrawer(){
+  $('#drawer').classList.remove('open');$('#scrim').classList.remove('open');
+  $('#drawer').setAttribute('aria-hidden','true');document.documentElement.classList.remove('locked');
+  S.editing=null;
+}
+$('#drClose').addEventListener('click',closeDrawer);
+$('#drCancel').addEventListener('click',closeDrawer);
+$('#scrim').addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#drawer').classList.contains('open'))closeDrawer();});
+$('#drSave').addEventListener('click',()=>{
+  const d=S.editing;if(!d||d.picker){closeDrawer();return;}
+  if(!d.name.trim()){toast('Введите название листа',null,true);$('#lName').focus();return;}
+  const i=S.lists.findIndex(x=>x.id===d.id);
+  delete d.isNew;
+  if(i>=0)S.lists[i]=d;else S.lists.unshift(d);
+  persistLists();paint();closeDrawer();toast('Лист сохранён');
+});
+$('#newList').addEventListener('click',()=>openList(null));
+$('#newList2').addEventListener('click',()=>openList(null));
+$('#listGrid').addEventListener('click',e=>{
+  const del=e.target.closest('[data-dellist]');
+  if(del){
+    const id=del.dataset.dellist,i=S.lists.findIndex(x=>x.id===id);
+    if(i<0)return;const prev=S.lists[i];
+    S.lists.splice(i,1);persistLists();paint();
+    toast('Лист «'+prev.name+'» удалён',{label:'Отменить',fn:()=>{S.lists.splice(i,0,prev);persistLists();paint();}});
+    return;
+  }
+  const card=e.target.closest('[data-list]');if(card)openList(card.dataset.list);
+});
+
+/* ── аккаунт ── */
+$('#accForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=$('#fName').value.trim(),email=$('#fEmail').value.trim().toLowerCase(),news=$('#fNews').checked;
+  if(name.length<2){toast('Имя от двух символов',null,true);return;}
+  if(!/^[^\s@]+@[^\s@]+\.[A-Za-zА-Яа-я]{2,}$/.test(email)){toast('Проверьте адрес почты',null,true);return;}
+  const prev=clone(S.me);
+  S.me.name=name;S.me.email=email;S.me.newsletter=news;paint();
+  if(S.mode==='server'){
+    try{await api('/api/me','POST',{name,email,newsletter:news});toast('Профиль обновлён');}
+    catch(err){S.me=prev;paint();toast(err.message||'Не удалось сохранить',null,true);}
+  }else{
+    const users=store.get('crema-users',[]);
+    if(users.length){users[0].name=name;users[0].email=email;users[0].newsletter=news;store.set('crema-users',users);}
+    store.set('crema-profile',{name,email,newsletter:news,createdAt:S.me.created_at});
+    toast('Профиль сохранён локально');
+  }
+});
+
+/* ── пароль ── */
+const checks=p=>({len:p.length>=8,case:/[a-zа-яё]/.test(p)&&/[A-ZА-ЯЁ]/.test(p),digit:/\d/.test(p),sym:/[^\w\s]/.test(p)});
+$('#pwNew').addEventListener('input',e=>{
+  const p=e.target.value,c=checks(p);
+  let s=0;if(c.len)s++;if(p.length>=12)s++;if(c.case)s++;if(c.digit)s++;if(c.sym)s++;
+  const lvl=p.length?Math.max(1,Math.min(4,s)):0;
+  const col=['var(--danger)','var(--danger)','var(--warn)','var(--brass)','var(--ok)'][lvl];
+  $('#pwMeter').style.setProperty('--lvl',col);
+  $$('#pwMeter i').forEach((el,i)=>el.classList.toggle('on',i<lvl));
+  $$('#pwReqs .req').forEach(el=>el.classList.toggle('ok',!!c[el.dataset.r]));
+});
+$('#pwForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const old=$('#pwOld').value,nw=$('#pwNew').value,rp=$('#pwRep').value,c=checks(nw);
+  if(!old){toast('Введите текущий пароль',null,true);return;}
+  if(!(c.len&&c.case&&c.digit)){toast('Пароль: 8+ символов, оба регистра и цифра',null,true);return;}
+  if(nw!==rp){toast('Пароли не совпадают',null,true);return;}
+  if(S.mode==='server'){
+    try{await api('/api/me/password','POST',{current:old,password:nw});$('#pwForm').reset();
+      $$('#pwMeter i').forEach(el=>el.classList.remove('on'));$$('#pwReqs .req').forEach(el=>el.classList.remove('ok'));
+      toast('Пароль обновлён');}
+    catch(err){toast(err.message||'Не удалось сменить пароль',null,true);}
+  }else{
+    store.set('crema-local-pw',nw);$('#pwForm').reset();toast('Пароль сохранён локально (демо-режим)');
+  }
+});
+
+/* ── выход ── */
+async function out(){
+  try{await api('/api/logout','POST');}catch(e){}
+  store.del('crema-profile');
+  toast('Сессия закрыта');
+  setTimeout(()=>location.href='login.html',600);
+}
+$('#topOut').addEventListener('click',out);
+$('#mOut').addEventListener('click',out);
+$('#killSess').addEventListener('click',out);
+
+boot();
+})();
+</script>
+</body>
+</html>

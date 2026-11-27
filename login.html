@@ -1,0 +1,785 @@
+<!--
+  login.html · CREMA — ВХОД (страница 2 из 6)
+  Исправлено: блоки «разлогин» и «вошёл» больше не показываются одновременно.
+  Переключение идёт через атрибут hidden + защита [hidden]{display:none!important}.
+  Ссылки между страницами — .html-файлы рядом. Скрипт автономный (app.js не нужен).
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход — CREMA · витрина кофе</title>
+<meta name="description" content="Вход в кабинет CREMA: набор логина кофейным зерном и капча о кофейной культуре.">
+<meta name="theme-color" content="#0f0c09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z' fill='%23c8a468'/%3E%3Cpath d='M40 8C31 22 49 32 40 46C33 57 46 63 40 72' fill='none' stroke='%230f0c09' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="login.css">
+<style>
+/* ══ ЗАЩИТА ВИДИМОСТИ БЛОКОВ ══
+   1) .lg-done всегда grid, когда не hidden (перебивает display:none из login.css);
+   2) [hidden] с !important сильнее любых display-правил блоков. */
+.lg-done{display:grid;gap:18px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="g-bourbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8a468"/><stop offset="1" stop-color="#a14e2e"/></linearGradient>
+  <linearGradient id="g-burlap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a7748"/><stop offset=".55" stop-color="#6d5232"/><stop offset="1" stop-color="#43331e"/></linearGradient>
+  <linearGradient id="g-beanbtn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2c68e"/><stop offset=".55" stop-color="#c8a468"/><stop offset="1" stop-color="#8a6a35"/></linearGradient>
+</defs>
+  <symbol id="bean-fill" viewBox="0 0 80 80"><path d="M40 6C57 6 68 21 68 40C68 59 57 74 40 74C23 74 12 59 12 40C12 21 23 6 40 6Z"/><path d="M40 8C31 22 49 32 40 46C33 57 46 63 40 72" fill="none" stroke="rgba(15,8,4,.45)" stroke-width="4.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.3-3.6 4.1-5.5 7.5-5.5s6.2 1.9 7.5 5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M4 4l16 16M9.9 5.9A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-3.4 4.1M6.4 7.9A16.7 16.7 0 0 0 2.5 12S6 18.5 12 18.5c1.2 0 2.3-.2 3.3-.6"/><path d="M9.9 10.2a3 3 0 0 0 4.1 4.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></symbol>
+  <symbol id="i-arr" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.2v.6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.6"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-.7 4.5"/><path d="M20 4.5V11h-6.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 6.5V5A1.5 1.5 0 0 0 13.5 3.5H5A1.5 1.5 0 0 0 3.5 5v8.5A1.5 1.5 0 0 0 5 15h1.5"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M8.5 5.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11L2.5 12l6-6.5Z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15M9 6V4.5h6V6M6.5 6.5l1 13h9l1-13M10 10.5v6M14 10.5v6"/></symbol>
+  <symbol id="i-commit" viewBox="0 0 24 24"><path d="M20 6v6a3 3 0 0 1-3 3H5"/><path d="M9 11l-4 4 4 4"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7.5 5.5c0-1 .8-1.2.8-2M11.5 5.5c0-1 .8-1.2.8-2"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 9 12 4 20 4c0 9-5 15-13 15h-2Z"/><path d="M5 19c3-5 7-8.5 11-10.5"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4v-5Z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4v-5Z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-case" viewBox="0 0 24 24"><path d="M2.5 18l4.5-12 4.5 12M4 14h6"/><path d="M21 10.5v7.5M21 13.5a3.2 3.2 0 1 0 0 4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v6c0 4.4-3.1 7.9-7.5 9-4.4-1.1-7.5-4.6-7.5-9V6L12 3Z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M17 8.5l3.5 3.5L17 15.5M20 12h-9"/></symbol>
+</svg>
+
+<div class="lg-bg" aria-hidden="true"></div>
+<div class="lg-scrim" aria-hidden="true"></div>
+<div class="lg-rail" aria-hidden="true"></div>
+
+<header class="sh" id="sh">
+  <div class="sh-in">
+    <a class="logo" href="index.html" aria-label="CREMA — на главную">
+      <svg viewBox="0 0 80 80" aria-hidden="true"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg>
+      <span class="logo-t"><b id="brandWord">CREMA</b><span>кофейная витрина</span></span>
+    </a>
+    <nav class="sh-nav" aria-label="Основная навигация">
+      <a href="index.html">Витрина</a>
+      <a href="index.html#varieties">Сорта</a>
+      <a href="index.html#drinks">Напитки</a>
+      <a href="index.html#journey">Путь зерна</a>
+    </nav>
+    <div class="sh-act">
+      <a class="btn btn-ghost btn-sm" href="login.html" aria-current="page"><svg class="ic"><use href="#i-user"/></svg>Войти</a>
+      <a class="btn btn-sm" href="register.html">Регистрация</a>
+      <button id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <a class="m-link" href="index.html">Витрина <small>01</small></a>
+  <a class="m-link" href="index.html#varieties">Сорта <small>02</small></a>
+  <a class="m-link" href="index.html#drinks">Напитки <small>03</small></a>
+  <a class="m-link" href="index.html#journey">Путь зерна <small>04</small></a>
+  <div class="m-auth">
+    <a class="btn btn-ghost" href="login.html" aria-current="page">Войти</a>
+    <a class="btn" href="register.html">Регистрация</a>
+  </div>
+  <p class="m-note">CREMA · 6 СТРАНИЦ · FASTAPI + UVICORN</p>
+</div>
+
+<main class="lg-page">
+  <div class="lg-shell">
+
+    <!-- видно ТОЛЬКО при активной сессии -->
+    <div class="lg-session" id="sessionBanner" hidden>
+      <svg class="ic"><use href="#i-shield"/></svg>
+      <div><b id="sessName">—</b><span>Сессия активна. Кабинет и витрина доступны из шапки.</span></div>
+      <button class="btn btn-ghost btn-sm" type="button" id="logoutBtn"><svg class="ic"><use href="#i-out"/></svg>Выйти</button>
+    </div>
+
+    <div class="lg-card">
+      <!-- видно ТОЛЬКО когда пользователь НЕ вошёл -->
+      <div id="formSide">
+        <div class="lg-head" data-stage style="--d:.05s">
+          <span class="eyebrow">Терминал обжарочной · вход</span>
+          <h1>С возвращением к <em>витрине</em></h1>
+          <p>Логин набирается вручную — как на кнопочном телефоне, только вместо клавиши кофейное зерно. Одно нажатие — один символ из мешка.</p>
+        </div>
+
+        <ol class="lg-how" data-stage style="--d:.14s">
+          <li><span class="lg-how-n">01</span><b>Жмите зерно или Enter</b><span>Символ крутится по кругу и падает в строку.</span></li>
+          <li><span class="lg-how-n">02</span><b>Пауза фиксирует</b><span>Полоска под символом — таймер фиксации.</span></li>
+          <li><span class="lg-how-n">03</span><b>Дальше — новый</b><span>Цифры → символы → буквы раскладки.</span></li>
+        </ol>
+
+        <div class="lg-order" data-stage style="--d:.2s">
+          <span class="lg-order-i">0–9</span><svg class="ic"><use href="#i-arr"/></svg>
+          <span class="lg-order-i">- _ . @</span><svg class="ic"><use href="#i-arr"/></svg>
+          <span class="lg-order-i" id="orderLetters">а–я</span>
+        </div>
+
+        <form id="loginForm" novalidate data-stage style="--d:.26s">
+          <input type="hidden" id="identifier" name="identifier" value="">
+
+          <div class="lg-machine" id="machine" tabindex="0" role="group" aria-label="Набор логина кофейным зерном">
+            <div class="lg-mhead">
+              <span class="lg-mtitle"><svg class="ic"><use href="#i-cup"/></svg>Мешок №7 · набор логина</span>
+              <button class="lg-sound" type="button" id="soundBtn" aria-pressed="true" title="Звук набора">
+                <svg class="ic"><use href="#i-sound"/></svg><span>Звук вкл</span>
+              </button>
+            </div>
+
+            <div class="lg-stage" id="stage">
+              <div class="lg-bagwrap">
+                <svg class="lg-bag" id="bag" viewBox="0 0 220 170" aria-hidden="true">
+                  <ellipse cx="110" cy="160" rx="70" ry="8" fill="rgba(0,0,0,.4)"/>
+                  <path d="M46 62C40 100 44 132 62 146 82 158 138 158 158 146 176 132 180 100 174 62Z" fill="url(#g-burlap)"/>
+                  <path d="M72 70C66 104 70 130 84 145" stroke="rgba(0,0,0,.2)" stroke-width="3" fill="none"/>
+                  <path d="M148 70C154 104 150 130 136 145" stroke="rgba(0,0,0,.2)" stroke-width="3" fill="none"/>
+                  <path d="M110 74v72" stroke="rgba(255,255,255,.06)" stroke-width="6" fill="none"/>
+                  <path d="M52 96h116M52 118h116" stroke="rgba(0,0,0,.12)" stroke-width="2" stroke-dasharray="5 7"/>
+                  <rect x="86" y="100" width="48" height="30" rx="3" fill="#efe6d4" opacity=".92" transform="rotate(-4 110 115)"/>
+                  <text x="110" y="113" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#43331e" transform="rotate(-4 110 115)">CREMA</text>
+                  <text x="110" y="124" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#8a6a35" transform="rotate(-4 110 115)">ЛОТ №7</text>
+                  <path d="M40 58C60 42 160 42 180 58 160 74 60 74 40 58Z" fill="#7d5f3a"/>
+                  <ellipse cx="110" cy="55" rx="64" ry="13" fill="#241708"/>
+                  <g>
+                    <use href="#bean-fill" width="26" height="26" x="72" y="42" fill="#3a2513" transform="rotate(-18 85 55)"/>
+                    <use href="#bean-fill" width="24" height="24" x="98" y="40" fill="#46301a" transform="rotate(24 110 52)"/>
+                    <use href="#bean-fill" width="26" height="26" x="122" y="42" fill="#2e1c0e" transform="rotate(-40 135 55)"/>
+                    <use href="#bean-fill" width="20" height="20" x="88" y="48" fill="#33200e" transform="rotate(60 98 58)"/>
+                    <use href="#bean-fill" width="20" height="20" x="112" y="49" fill="#402a15" transform="rotate(-8 122 59)"/>
+                  </g>
+                  <circle id="mouth" cx="110" cy="52" r="1" fill="none"/>
+                </svg>
+              </div>
+
+              <div class="lg-linebox">
+                <span class="lg-label">Логин</span>
+                <div class="lg-line" id="line" role="textbox" aria-readonly="true" aria-label="Набранный логин"></div>
+                <div class="lg-readout">
+                  <span id="cnt">0 / 64</span>
+                  <span class="lg-dot"></span>
+                  <span id="pos">позиция —</span>
+                  <span class="lg-dot"></span>
+                  <span id="layRead">раскладка: РУС</span>
+                </div>
+                <span class="sr" id="live" aria-live="polite"></span>
+              </div>
+            </div>
+
+            <div class="lg-pad">
+              <button class="lg-bean" type="button" id="beanBtn" aria-label="Нажать зерно: следующий символ">
+                <svg viewBox="0 0 80 80" aria-hidden="true"><use href="#bean-fill" fill="url(#g-beanbtn)"/></svg>
+                <span class="lg-bean-t">НАЖМИ</span>
+                <span class="lg-bean-h">или Enter</span>
+              </button>
+              <div class="lg-keys">
+                <button class="lg-tool lg-tool-w" type="button" id="commitBtn"><svg class="ic"><use href="#i-commit"/></svg><span>Зафиксировать</span><em>Space</em></button>
+                <button class="lg-tool lg-tool-w" type="button" id="backBtn"><svg class="ic"><use href="#i-back"/></svg><span>Стереть</span><em>Backspace</em></button>
+                <button class="lg-tool lg-tool-w" type="button" id="clearBtn"><svg class="ic"><use href="#i-trash"/></svg><span>Очистить</span><em>Esc ×2</em></button>
+              </div>
+            </div>
+
+            <div class="lg-tools" role="group" aria-label="Настройки набора">
+              <button class="lg-tool" type="button" id="layoutBtn" aria-label="Раскладка"><svg class="ic"><use href="#i-grid"/></svg><span id="layoutTxt">РУС</span></button>
+              <button class="lg-tool" type="button" id="caseBtn" aria-pressed="false"><svg class="ic"><use href="#i-case"/></svg><span id="caseTxt">строчные</span></button>
+              <label class="lg-slider">
+                <span>Пауза</span>
+                <input type="range" id="speed" min="400" max="2000" step="100" value="900" aria-label="Длительность паузы фиксации, мс">
+                <b id="speedTxt">900 мс</b>
+              </label>
+              <button class="lg-tool" type="button" id="guidesBtn" aria-pressed="true"><svg class="ic"><use href="#i-grid"/></svg><span>Лента</span></button>
+              <button class="lg-tool" type="button" id="copyBtn"><svg class="ic"><use href="#i-copy"/></svg><span>Копировать</span></button>
+              <button class="lg-tool" type="button" id="randBtn"><svg class="ic"><use href="#i-dice"/></svg><span>Случайный</span></button>
+              <button class="lg-tool" type="button" id="resetBtn"><svg class="ic"><use href="#i-refresh"/></svg><span>Сброс</span></button>
+            </div>
+
+            <div class="lg-reel" id="reel" aria-hidden="true"></div>
+          </div>
+
+          <div class="lg-field" id="fPass">
+            <label for="password">Пароль</label>
+            <div class="lg-iwrap">
+              <input class="lg-inp" id="password" name="password" type="password" autocomplete="current-password" placeholder="Пароль от аккаунта">
+              <svg class="ic lg-lead"><use href="#i-lock"/></svg>
+              <button class="lg-trail" type="button" id="eyeBtn" aria-label="Показать пароль" aria-pressed="false"><svg class="ic"><use href="#i-eye"/></svg></button>
+            </div>
+            <span class="lg-caps" id="caps"><svg class="ic"><use href="#i-alert"/></svg>Включён Caps Lock</span>
+          </div>
+
+          <div class="lg-cap" id="cap">
+            <div class="lg-cap-head">
+              <span class="lg-cap-t"><svg class="ic"><use href="#i-leaf"/></svg>Кофейная капча</span>
+              <button class="lg-cap-refresh" type="button" id="capRefresh" aria-label="Другой вопрос"><svg class="ic"><use href="#i-refresh"/></svg></button>
+            </div>
+            <p class="lg-cap-q" id="capQ">Загружаем вопрос…</p>
+            <div class="lg-cap-opts" id="capOpts" role="radiogroup" aria-label="Ответ на кофейный вопрос"></div>
+            <span class="lg-cap-note" id="capNote">Вопрос о кофе вместо картинок с автобусами.</span>
+          </div>
+
+          <label class="lg-check">
+            <input type="checkbox" id="remember" checked>
+            <span class="lg-box"><svg class="ic"><use href="#i-check"/></svg></span>
+            <span>Запомнить меня на этом устройстве на 7 дней</span>
+          </label>
+
+          <div class="lg-alert" id="alert" role="alert"><svg class="ic"><use href="#i-alert"/></svg><span id="alertTxt"></span></div>
+
+          <button class="btn btn-block" type="submit" id="submitBtn"><span id="btnTxt">Войти в кабинет</span><svg class="ic" id="btnIco"><use href="#i-arr"/></svg></button>
+          <p class="lg-alt">Нет аккаунта? <a class="lg-link" href="register.html">Завести за минуту</a> · <a class="lg-link" href="index.html">Вернуться к витрине</a></p>
+        </form>
+      </div>
+
+      <!-- видно ТОЛЬКО после успешного входа -->
+      <div class="lg-done" id="done" role="status" hidden>
+        <div class="lg-seal"><svg class="ic"><use href="#i-check"/></svg></div>
+        <h3 id="doneTitle">Вход выполнен</h3>
+        <p>Сессия открыта. Избранное с витрины можно переносить в кабинет.</p>
+        <div class="lg-sum">
+          <div><span>Аккаунт</span><b id="sumName">—</b></div>
+          <div><span>Почта</span><b id="sumEmail">—</b></div>
+          <div><span>Логин набран</span><b id="sumLogin">—</b></div>
+          <div><span>Сессия до</span><b id="sumExp">—</b></div>
+        </div>
+        <div class="lg-mode" id="modeNote"><svg class="ic"><use href="#i-info"/></svg><span id="modeTxt"></span></div>
+        <div class="lg-done-act">
+          <a class="btn" href="/"><svg class="ic"><use href="#i-cup"/></svg>К витрине</a>
+          <a class="btn btn-ghost" href="profile.html"><svg class="ic"><use href="#i-user"/></svg>Открыть профиль</a>
+          <button class="btn btn-ghost" type="button" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>Выйти</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="sf">
+  <div class="wrap">
+    <div class="sf-grid">
+      <div>
+        <a class="logo" href="index.html"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+        <p>Витрина спешелти-кофе: происхождение, обжарка и точные составы напитков.</p>
+      </div>
+      <div>
+        <h4>Витрина</h4>
+        <ul>
+          <li><a href="index.html#varieties">Сорта и микролоты</a></li>
+          <li><a href="index.html#drinks">Напитки и рецепты</a></li>
+          <li><a href="index.html#journey">Путь зерна</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Страницы · 6</h4>
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="login.html"><span class="cur"></span>Вход</a></li>
+          <li><a href="register.html">Регистрация</a></li>
+          <li><a href="profile.html">Личный профиль</a></li>
+          <li><a href="admin.html"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a></li>
+          <li><a href="404.html">Страница 404</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sf-bot"><span>© 2026 CREMA · Обжарочная мастерская</span><span>Поддержка: <a href="mailto:hello@crema.coffee">hello@crema.coffee</a></span></div>
+  </div>
+</footer>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MAX=64;
+
+/* блоки состояний: управляются ТОЛЬКО атрибутом hidden */
+const formSide=$('#formSide'), doneBox=$('#done'), banner=$('#sessionBanner');
+function showLoggedOut(){ banner.hidden=true; doneBox.hidden=true; formSide.hidden=false; }
+function showLoggedIn(){ formSide.hidden=true; doneBox.hidden=false; }
+
+/* ══════════ ПРИВЯЗКА ЛЕВОГО КРАЯ К БУКВЕ «C» ══════════ */
+const brandWord=document.getElementById('brandWord');
+function alignToBrand(){
+  if(!brandWord)return;
+  const x=brandWord.getBoundingClientRect().left;
+  if(x>=0)document.documentElement.style.setProperty('--brand-x',x.toFixed(2)+'px');
+}
+alignToBrand();
+addEventListener('resize',alignToBrand,{passive:true});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignToBrand);
+addEventListener('load',alignToBrand);
+requestAnimationFrame(alignToBrand);
+
+/* ══════════ БЕСШОВНЫЙ СЛОЙ ЗЁРЕН ══════════ */
+(function(){
+  let a=20261126;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const W=680,pal=['#2a190c','#31200f','#382412','#402a15','#241408','#46301a','#33200e','#2e1c0e'],sc=['.72','.82','.92','1.02','1.12'];
+  const beans=[],cell=W/9;
+  for(let gy=0;gy<9;gy++)for(let gx=0;gx<9;gx++){
+    const cx=gx*cell+cell/2+(rnd()*44-22),cy=gy*cell+cell/2+(rnd()*44-22);
+    beans.push([cx,cy,Math.floor(rnd()*180),sc[Math.floor(rnd()*5)],pal[Math.floor(rnd()*8)]]);
+    if(rnd()<.42)beans.push([cx+(rnd()*60-30),cy+(rnd()*60-30),Math.floor(rnd()*180),sc[Math.floor(rnd()*3)],pal[Math.floor(rnd()*8)]]);
+  }
+  let u='';
+  beans.forEach(([x,y,r,s,c])=>{for(const dx of[-W,0,W])for(const dy of[-W,0,W]){const X=x+dx,Y=y+dy;
+    if(X>-42&&X<W+42&&Y>-42&&Y<W+42)u+=`<use href='#b' transform='translate(${Math.round(X)},${Math.round(Y)})rotate(${r})scale(${s})' color='${c}'/>`;}});
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='680' height='680'><defs><radialGradient id='s' cx='.36' cy='.32' r='.95'><stop offset='0' stop-color='#fff' stop-opacity='.13'/><stop offset='.55' stop-color='#fff' stop-opacity='0'/><stop offset='1' stop-color='#000' stop-opacity='.4'/></radialGradient><g id='b'><ellipse rx='20' ry='27' fill='currentColor'/><ellipse rx='20' ry='27' fill='url(#s)'/><path d='M0,-24C-7,-9,7,9,0,24' fill='none' stroke='#120a05' stroke-width='4' stroke-linecap='round'/><path d='M3,-21C-3,-8,9,8,3,21' fill='none' stroke='#000' opacity='.22' stroke-width='2'/><ellipse cx='-7' cy='-10' rx='7' ry='10' fill='#fff' opacity='.05'/></g></defs><rect width='680' height='680' fill='#171009'/>${u}</svg>`;
+  document.documentElement.style.setProperty('--beans-tex','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
+})();
+
+/* ══════════ ОБОЛОЧКА ══════════ */
+const sh=$('#sh');
+addEventListener('scroll',()=>sh.classList.toggle('scrolled',scrollY>8),{passive:true});
+sh.classList.toggle('scrolled',scrollY>8);
+const burger=$('#burger'),mmenu=$('#mmenu');
+function setMenu(open){
+  document.documentElement.classList.toggle('menu-open',open);
+  document.documentElement.classList.toggle('locked',open);
+  burger.setAttribute('aria-expanded',String(open));
+  mmenu.setAttribute('aria-hidden',String(!open));
+}
+burger.addEventListener('click',()=>setMenu(!document.documentElement.classList.contains('menu-open')));
+$$('#mmenu a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+
+/* ══════════ ТОСТЫ ══════════ */
+function toast(msg,action,bad){
+  const box=$('#toasts');while(box.children.length>=3)box.firstChild.remove();
+  const t=document.createElement('div');t.className='toast'+(bad?' bad':'');
+  t.innerHTML='<svg class="ic"><use href="#i-'+(bad?'alert':'check')+'"/></svg><p></p>'+(action?'<button class="t-act" type="button">'+esc(action.label)+'</button>':'');
+  t.querySelector('p').textContent=msg;box.appendChild(t);
+  const kill=()=>{t.classList.add('out');setTimeout(()=>t.remove(),300);};
+  const timer=setTimeout(kill,action?6500:4000);
+  if(action)t.querySelector('.t-act').addEventListener('click',()=>{clearTimeout(timer);action.fn();kill();});
+}
+
+/* ══════════ ЗВУК ══════════ */
+let AC=null,noiseBuf=null;
+function ctx(){
+  if(!M.sound)return null;
+  try{
+    if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended')AC.resume();
+    if(!noiseBuf){
+      noiseBuf=AC.createBuffer(1,AC.sampleRate*0.2,AC.sampleRate);
+      const d=noiseBuf.getChannelData(0);
+      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+    }
+    return AC;
+  }catch(e){return null;}
+}
+function sfx(kind){
+  const c=ctx();if(!c)return;
+  const t=c.currentTime,g=c.createGain();g.connect(c.destination);
+  if(kind==='drop'||kind==='lock'){
+    const src=c.createBufferSource();src.buffer=noiseBuf;
+    const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=kind==='drop'?1500:900;bp.Q.value=1.4;
+    src.connect(bp);bp.connect(g);
+    g.gain.setValueAtTime(kind==='drop'?.05:.035,t);
+    g.gain.exponentialRampToValueAtTime(.0001,t+.16);
+    src.start(t);src.stop(t+.18);
+    const o=c.createOscillator(),og=c.createGain();
+    o.type='sine';o.frequency.setValueAtTime(kind==='drop'?170:320,t);
+    o.frequency.exponentialRampToValueAtTime(kind==='drop'?90:520,t+.12);
+    og.gain.setValueAtTime(.05,t);og.gain.exponentialRampToValueAtTime(.0001,t+.14);
+    o.connect(og);og.connect(c.destination);o.start(t);o.stop(t+.15);
+  }else{
+    const o=c.createOscillator();o.type=kind==='tick'?'triangle':'sine';
+    o.frequency.setValueAtTime(kind==='tick'?760:420,t);
+    o.frequency.exponentialRampToValueAtTime(kind==='tick'?520:240,t+.05);
+    g.gain.setValueAtTime(kind==='tick'?.028:.03,t);
+    g.gain.exponentialRampToValueAtTime(.0001,t+.07);
+    o.connect(g);o.start(t);o.stop(t+.08);
+  }
+}
+
+/* ══════════ СОСТОЯНИЕ НАБОРА ══════════ */
+const DIGITS='0123456789', SPECIALS='-_.@';
+const RU='абвгдеёжзийклмнопрстуфхцчшщъыьэюя', EN='abcdefghijklmnopqrstuvwxyz';
+const M={value:'',pending:null,layout:'ru',upper:false,commitMs:900,sound:true,guides:true,
+         layoutLocked:false,auto:false,timerAnim:null,escAt:0,capToken:null,capAnswer:null,capLocal:null};
+const letters=()=>M.layout==='ru'?RU:EN;
+const charset=()=>{const s=DIGITS+SPECIALS+letters();return M.upper?s.toUpperCase():s;};
+
+const line=$('#line'),reel=$('#reel'),stage=$('#stage'),bag=$('#bag'),mouth=$('#mouth');
+
+function buildReel(){
+  const cs=charset();
+  const groups=[['Цифры',DIGITS.length,0],['Символы',SPECIALS.length,DIGITS.length],
+                [M.layout==='ru'?'Буквы РУС':'Letters EN',letters().length,DIGITS.length+SPECIALS.length]];
+  reel.innerHTML='<div class="lg-reel-in">'+groups.map(g=>
+    '<div class="lg-group"><span class="lg-glabel">'+g[0]+'</span><div class="lg-gkeys">'+
+    Array.from({length:g[1]},(_,i)=>'<i class="lg-key" data-i="'+(g[2]+i)+'">'+cs[g[2]+i]+'</i>').join('')+
+    '</div></div>').join('')+'</div>';
+}
+function updateReel(){
+  const keys=reel.querySelectorAll('.lg-key');
+  keys.forEach(k=>k.classList.toggle('on',M.pending!==null&&+k.dataset.i===M.pending));
+  if(M.pending!==null){
+    const k=reel.querySelector('.lg-key.on');
+    if(k)reel.scrollTo({left:Math.max(0,k.offsetLeft-reel.clientWidth/2+k.offsetWidth/2),behavior:reduced?'auto':'smooth'});
+  }
+  $('#pos').textContent=M.pending===null?'позиция —':'позиция '+(M.pending+1)+' / '+charset().length;
+  $('#layRead').textContent='раскладка: '+(M.layout==='ru'?'РУС':'ENG')+(M.upper?' · ЗАГЛ':'');
+  $('#orderLetters').textContent=M.layout==='ru'?(M.upper?'А–Я':'а–я'):(M.upper?'A–Z':'a–z');
+}
+function renderLine(){
+  if(M.timerAnim){try{M.timerAnim.cancel();}catch(e){}M.timerAnim=null;}
+  const cs=charset();
+  const empty=!M.value&&M.pending===null;
+  let inner=M.value.split('').map(c=>'<span class="ch">'+(c==='&'?'&amp;':c==='<'?'&lt;':c)+'</span>').join('');
+  if(M.pending!==null)inner+='<span class="ch pend">'+cs[M.pending]+'<i class="ch-timer"></i></span>';
+  if(!empty)inner+='<span class="caret"></span>';
+  line.innerHTML=(empty?'<span class="lg-ph">нажмите зерно — символ упадёт сюда</span>':'')
+    +'<div class="lg-line-in">'+inner+'</div>';
+  line.scrollLeft=line.scrollWidth;
+  $('#identifier').value=M.value+(M.pending!==null?cs[M.pending]:'');
+  $('#cnt').textContent=$('#identifier').value.length+' / '+MAX;
+  updateReel();
+}
+function restartTimer(){
+  const bar=line.querySelector('.ch-timer');
+  if(!bar||M.auto)return;
+  if(reduced){M.timerAnim=null;setTimeout(()=>{if(M.pending!==null)commit();},M.commitMs);return;}
+  M.timerAnim=bar.animate([{transform:'scaleX(1)'},{transform:'scaleX(0)'}],{duration:M.commitMs,easing:'linear',fill:'forwards'});
+  M.timerAnim.onfinish=()=>{M.timerAnim=null;commit();};
+}
+
+let flying=0;
+function dropBean(ch){
+  if(reduced)return;
+  const slot=line.querySelector('.ch.pend');if(!slot)return;
+  if(flying>8)return;
+  const sr=stage.getBoundingClientRect(),mr=mouth.getBoundingClientRect(),tr=slot.getBoundingClientRect();
+  const x0=mr.left+mr.width/2-sr.left, y0=mr.top+mr.height/2-sr.top;
+  const dx=(tr.left+tr.width/2-sr.left)-x0, dy=(tr.top+tr.height/2-sr.top)-y0;
+  const el=document.createElement('div');
+  el.className='lg-fall';
+  el.style.left=x0+'px';el.style.top=y0+'px';
+  el.innerHTML='<svg viewBox="0 0 80 80"><use href="#bean-fill" fill="url(#g-beanbtn)"/></svg><b></b>';
+  el.querySelector('b').textContent=ch;
+  stage.appendChild(el);flying++;
+  const base='translate(-50%,-50%) ';
+  const a=el.animate([
+    {transform:base+'translate(0px,0px) rotate(0deg) scale(.55)',opacity:0},
+    {transform:base+'translate('+(dx*.45)+'px,'+(dy*.45-20)+'px) rotate(150deg) scale(1)',opacity:1,offset:.45},
+    {transform:base+'translate('+dx+'px,'+dy+'px) rotate(300deg) scale(.95)',opacity:1,offset:.86},
+    {transform:base+'translate('+dx+'px,'+(dy+5)+'px) rotate(312deg) scale(.6)',opacity:0}
+  ],{duration:520,easing:'cubic-bezier(.35,.6,.4,1)'});
+  a.onfinish=()=>{el.remove();flying--;sfx('drop');};
+  a.oncancel=()=>{el.remove();flying--;};
+  bag.classList.remove('shake');void bag.offsetWidth;bag.classList.add('shake');
+  for(let i=0;i<2;i++){
+    const p=document.createElement('i');p.className='lg-spill';
+    p.style.left=x0+'px';p.style.top=y0+'px';stage.appendChild(p);
+    const px=(Math.random()*46-23),py=26+Math.random()*22;
+    const pa=p.animate([{transform:'translate(-50%,-50%) translate(0,0) scale(1)',opacity:.9},
+      {transform:'translate(-50%,-50%) translate('+px+'px,'+py+'px) scale(.4)',opacity:0}],
+      {duration:420+Math.random()*220,easing:'cubic-bezier(.3,.7,.5,1)'});
+    pa.onfinish=()=>p.remove();
+  }
+}
+
+function press(){
+  if(M.auto)return;
+  const cs=charset();
+  if(M.pending===null&&M.value.length>=MAX){toast('Достигнут предел в 64 символа',null,true);return;}
+  M.pending=M.pending===null?0:(M.pending+1)%cs.length;
+  renderLine();dropBean(cs[M.pending]);restartTimer();sfx('tick');
+  $('#beanBtn').classList.remove('hit');void $('#beanBtn').offsetWidth;$('#beanBtn').classList.add('hit');
+}
+function commit(silent){
+  if(M.pending===null)return;
+  const cs=charset();
+  M.value+=cs[M.pending];M.pending=null;
+  renderLine();
+  $('#live').textContent='Логин: '+M.value;
+  if(!silent){sfx('lock');const all=line.querySelectorAll('.ch');const el=all[all.length-1];
+    if(el&&!reduced){el.classList.add('locked');setTimeout(()=>el.classList.remove('locked'),400);}}
+}
+function backspace(){
+  if(M.auto)return;
+  if(M.pending!==null){M.pending=null;renderLine();sfx('cancel');return;}
+  if(!M.value)return;
+  M.value=M.value.slice(0,-1);renderLine();sfx('cancel');
+}
+function clearValue(){
+  if(!M.value&&M.pending===null)return;
+  const prev=M.value;
+  M.auto=false;M.value='';M.pending=null;renderLine();sfx('cancel');
+  if(prev)toast('Логин очищен',{label:'Отменить',fn:()=>{M.value=prev;renderLine();}});
+}
+function currentValue(){const cs=charset();return M.value+(M.pending!==null?cs[M.pending]:'');}
+
+async function autoType(str){
+  if(M.auto)return;
+  M.auto=true;$('#beanBtn').disabled=true;$('#randBtn').disabled=true;
+  M.value='';M.pending=null;renderLine();
+  for(const ch of str){
+    if(!M.auto)break;
+    const cs=charset(),idx=cs.indexOf(ch);
+    if(idx<0)continue;
+    M.pending=idx;renderLine();dropBean(cs[idx]);sfx('tick');
+    await sleep(120);
+    if(!M.auto)break;
+    commit(true);await sleep(45);
+  }
+  M.auto=false;$('#beanBtn').disabled=false;$('#randBtn').disabled=false;
+  sfx('lock');
+}
+
+/* ══════════ ПУЛЬТ ══════════ */
+$('#beanBtn').addEventListener('click',press);
+$('#commitBtn').addEventListener('click',()=>commit());
+$('#backBtn').addEventListener('click',backspace);
+$('#clearBtn').addEventListener('click',clearValue);
+$('#layoutBtn').addEventListener('click',()=>{
+  M.layoutLocked=true;M.layout=M.layout==='ru'?'en':'ru';
+  if(M.pending!==null)M.pending=Math.min(M.pending,charset().length-1);
+  $('#layoutTxt').textContent=M.layout==='ru'?'РУС':'ENG';
+  buildReel();renderLine();if(M.pending!==null)restartTimer();
+  toast('Раскладка набора: '+(M.layout==='ru'?'русская':'английская'));
+});
+$('#caseBtn').addEventListener('click',()=>{
+  M.upper=!M.upper;
+  $('#caseBtn').setAttribute('aria-pressed',String(M.upper));
+  $('#caseTxt').textContent=M.upper?'ЗАГЛАВНЫЕ':'строчные';
+  buildReel();renderLine();if(M.pending!==null)restartTimer();
+});
+$('#speed').addEventListener('input',e=>{
+  M.commitMs=+e.target.value;$('#speedTxt').textContent=M.commitMs+' мс';
+  if(M.pending!==null)restartTimer();
+});
+$('#guidesBtn').addEventListener('click',()=>{
+  M.guides=!M.guides;$('#guidesBtn').setAttribute('aria-pressed',String(M.guides));
+  reel.classList.toggle('off',!M.guides);
+});
+$('#soundBtn').addEventListener('click',()=>{
+  M.sound=!M.sound;
+  const b=$('#soundBtn');b.setAttribute('aria-pressed',String(M.sound));
+  b.querySelector('use').setAttribute('href',M.sound?'#i-sound':'#i-mute');
+  b.querySelector('span').textContent=M.sound?'Звук вкл':'Звук выкл';
+  if(M.sound)sfx('tick');
+});
+$('#copyBtn').addEventListener('click',async()=>{
+  const v=currentValue();
+  if(!v){toast('Строка пока пуста',null,true);return;}
+  try{await navigator.clipboard.writeText(v);toast('Логин скопирован: '+v);}
+  catch(e){toast('Браузер запретил доступ к буферу',null,true);}
+});
+$('#randBtn').addEventListener('click',()=>{
+  const base=['crema','zerno','obzharka','barista','roast'];
+  autoType(base[Math.floor(Math.random()*base.length)]+'_'+(10+Math.floor(Math.random()*89)));
+});
+$('#resetBtn').addEventListener('click',()=>{
+  M.auto=false;M.layoutLocked=false;M.upper=false;M.commitMs=900;M.guides=true;M.sound=true;
+  $('#speed').value=900;$('#speedTxt').textContent='900 мс';
+  $('#caseBtn').setAttribute('aria-pressed','false');$('#caseTxt').textContent='строчные';
+  $('#guidesBtn').setAttribute('aria-pressed','true');reel.classList.remove('off');
+  $('#soundBtn').setAttribute('aria-pressed','true');
+  $('#soundBtn').querySelector('use').setAttribute('href','#i-sound');
+  $('#soundBtn').querySelector('span').textContent='Звук вкл';
+  detectLayout(true);
+  clearValue();buildReel();renderLine();
+  toast('Настройки набора сброшены');
+});
+
+/* клавиатура */
+function inMachine(){return $('#machine').contains(document.activeElement)||document.activeElement===document.body;}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&inMachine()){e.preventDefault();press();return;}
+  if(inMachine()){
+    if(e.key===' '){e.preventDefault();commit();return;}
+    if(e.key==='Backspace'){e.preventDefault();backspace();return;}
+    if(e.key==='Escape'){
+      e.preventDefault();
+      const now=Date.now();
+      if(M.pending!==null){M.pending=null;renderLine();}
+      else if(now-M.escAt<600){clearValue();}
+      M.escAt=now;return;
+    }
+  }
+  if(e.key==='Escape'&&document.documentElement.classList.contains('menu-open'))setMenu(false);
+  if(e.key&&e.key.length===1&&!M.layoutLocked&&!M.auto){
+    if(/[а-яё]/i.test(e.key)&&M.layout!=='ru'){M.layout='ru';$('#layoutTxt').textContent='РУС';buildReel();renderLine();}
+    else if(/[a-z]/i.test(e.key)&&M.layout!=='en'){M.layout='en';$('#layoutTxt').textContent='ENG';buildReel();renderLine();}
+  }
+});
+async function detectLayout(force){
+  if(M.layoutLocked&&!force)return;
+  let l=null;
+  try{
+    if(navigator.keyboard&&navigator.keyboard.getLayoutMap){
+      const map=await navigator.keyboard.getLayoutMap();
+      const a=map.get('KeyA');
+      if(a&&/[а-яё]/i.test(a))l='ru';else if(a&&/^[a-z]$/i.test(a))l='en';
+    }
+  }catch(e){}
+  if(force)M.layoutLocked=false;
+  if(l&&l!==M.layout){M.layout=l;$('#layoutTxt').textContent=l==='ru'?'РУС':'ENG';buildReel();renderLine();}
+}
+
+/* ══════════ ПАРОЛЬ ══════════ */
+$('#eyeBtn').addEventListener('click',()=>{
+  const i=$('#password'),show=i.type==='password';
+  i.type=show?'text':'password';
+  const b=$('#eyeBtn');b.setAttribute('aria-pressed',String(show));
+  b.setAttribute('aria-label',show?'Скрыть пароль':'Показать пароль');
+  b.querySelector('use').setAttribute('href',show?'#i-eye-off':'#i-eye');
+  i.focus();
+});
+['keydown','keyup'].forEach(ev=>$('#password').addEventListener(ev,e=>{
+  $('#caps').classList.toggle('show',e.getModifierState&&e.getModifierState('CapsLock'));
+}));
+$('#password').addEventListener('blur',()=>$('#caps').classList.remove('show'));
+
+/* ══════════ КАПЧА ══════════ */
+const LOCAL_CAP=[
+ {q:'Что такое «крема» в чашке эспрессо?',o:['Молочная пена','Плотная пенка из масел и CO₂ на поверхности эспрессо','Слой сахара','Осадок от жмыха'],a:1},
+ {q:'В каком зерне больше кофеина?',o:['В арабике','В робусте','Одинаково','В либерике'],a:1},
+ {q:'Что происходит при «первом крэке»?',o:['Зерно трескается и раскрывается','Ломается жернов','Кипит вода','Трескается чашка'],a:0},
+ {q:'Родина арабики — это…',o:['Бразилия','Вьетнам','Эфиопия','Колумбия'],a:2},
+ {q:'Что взбивают вместе с эспрессо в рафе?',o:['Молоко 3,2%','Сливки и ванильный сахар','Сгущёнку','Кокосовое молоко'],a:1},
+ {q:'Сколько настаивается колд брю?',o:['20 минут','2 часа','16–18 часов','3 суток'],a:2},
+ {q:'Какой сорт прославился в панамском Бокете?',o:['Бурбон','Гейша','Типика','SL28'],a:1},
+ {q:'Рабочая температура воды для фильтра:',o:['70–75 °C','80–85 °C','92–96 °C','100 °C'],a:2}
+];
+function renderCap(data){
+  $('#capQ').textContent=data.question;
+  M.capAnswer=null;
+  $('#capOpts').innerHTML=data.options.map((o,i)=>
+    '<button class="lg-opt" type="button" role="radio" aria-checked="false" data-i="'+i+'"><span class="lg-opt-dot"></span>'+esc(o)+'</button>').join('');
+  $('#cap').classList.remove('bad');
+}
+async function loadCap(){
+  $('#capQ').textContent='Загружаем вопрос…';$('#capOpts').innerHTML='';
+  try{
+    const r=await fetch('/api/captcha',{cache:'no-store'});
+    if(!r.ok)throw 0;
+    const d=await r.json();
+    M.capToken=d.token;M.capLocal=null;renderCap(d);
+    $('#capNote').textContent='Вопрос выдан сервером · действует 5 минут.';
+  }catch(e){
+    const i=Math.floor(Math.random()*LOCAL_CAP.length),c=LOCAL_CAP[i];
+    M.capToken='local';M.capLocal=c;renderCap({question:c.q,options:c.o});
+    $('#capNote').textContent='Локальный режим: сервер капчи не подключён.';
+  }
+}
+$('#capOpts').addEventListener('click',e=>{
+  const b=e.target.closest('.lg-opt');if(!b)return;
+  $$('#capOpts .lg-opt').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-checked',String(x===b));});
+  M.capAnswer=+b.dataset.i;
+  $('#cap').classList.remove('bad');sfx('tick');
+});
+$('#capRefresh').addEventListener('click',()=>{
+  const b=$('#capRefresh');b.classList.add('spin-on');setTimeout(()=>b.classList.remove('spin-on'),500);
+  loadCap();
+});
+
+/* ══════════ СЕССИЯ ══════════ */
+async function checkSession(){
+  try{
+    const r=await fetch('/api/me',{cache:'no-store'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(d&&d.authenticated){
+      $('#sessName').textContent=d.name||d.email;
+      banner.hidden=false;          /* показываем баннер ТОЛЬКО реальному владельцу сессии */
+    }
+  }catch(e){}
+}
+async function doLogout(){
+  try{await fetch('/api/logout',{method:'POST'});}catch(e){}
+  showLoggedOut();
+  toast('Сессия закрыта');
+}
+$('#logoutBtn').addEventListener('click',doLogout);
+$('#outBtn').addEventListener('click',doLogout);
+
+/* ══════════ ОТПРАВКА ══════════ */
+function alertBox(msg){
+  const a=$('#alert');
+  if(!msg){a.classList.remove('show');return;}
+  $('#alertTxt').textContent=msg;a.classList.add('show');
+}
+function busy(on){
+  $('#submitBtn').disabled=on;
+  $('#btnTxt').textContent=on?'Проверяем…':'Войти в кабинет';
+  $('#btnIco').outerHTML=on?'<span class="spin" id="btnIco"></span>':'<svg class="ic" id="btnIco"><use href="#i-arr"/></svg>';
+}
+function finish(mode,user,login){
+  $('#sumName').textContent=user.name||'—';
+  $('#sumEmail').textContent=user.email||'—';
+  $('#sumLogin').textContent=login;
+  const d=new Date(Date.now()+($('#remember').checked?7:1)*864e5);
+  $('#sumExp').textContent=d.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'});
+  $('#modeTxt').textContent=mode==='server'
+    ? 'Сессия подписана сервером и записана в httpOnly-cookie. Пароль проверен по PBKDF2-хэшу.'
+    : 'Сервер входа не подключён, поэтому вход демонстрационный: аккаунт найден среди профилей этого браузера, пароль не проверяется.';
+  $('#doneTitle').textContent=mode==='server'?'Вход выполнен':'Демонстрационный вход';
+  showLoggedIn();                    /* форма скрывается, показывается только блок успеха */
+  sfx('lock');toast('Добро пожаловать, '+(user.name||login));
+  scrollTo({top:0,behavior:reduced?'auto':'smooth'});
+}
+$('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(M.pending!==null)commit(true);
+  const login=M.value.trim();
+  alertBox('');
+  if(login.length<3){alertBox('Наберите логин зерном — минимум 3 символа.');$('#machine').focus();return;}
+  if($('#password').value.length<8){alertBox('Пароль от 8 символов — тот же, что при регистрации.');$('#password').focus();return;}
+  if(M.capAnswer===null){alertBox('Выберите ответ на кофейный вопрос.');$('#cap').classList.add('bad');return;}
+  if(M.capLocal&&M.capAnswer!==M.capLocal.a){
+    $('#cap').classList.add('bad');alertBox('Неверный ответ. Попробуйте другой вопрос.');loadCap();return;
+  }
+  busy(true);
+  let mode='server',user=null;
+  try{
+    const r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({identifier:login,password:$('#password').value,
+        captcha_token:M.capToken,captcha_answer:M.capAnswer,remember:$('#remember').checked})});
+    if(r.ok){user=await r.json();}
+    else if([400,401,422].includes(r.status)){
+      let d='Не удалось войти. Проверьте данные.';
+      try{const j=await r.json();if(j&&j.detail)d=typeof j.detail==='string'?j.detail:JSON.stringify(j.detail);}catch(err){}
+      alertBox(d);busy(false);
+      if(r.status===400){$('#cap').classList.add('bad');loadCap();}
+      toast('Вход отклонён',null,true);return;
+    }else{mode='local';}
+  }catch(err){mode='local';}
+  if(mode==='local'){
+    let rows=[];try{rows=JSON.parse(localStorage.getItem('crema-users')||'[]');}catch(err){rows=[];}
+    const id=login.toLowerCase();
+    user=rows.find(u=>u.email===id)||rows.find(u=>String(u.email||'').split('@')[0]===id);
+    if(!user){
+      busy(false);
+      alertBox('Сервер входа не подключён, а в этом браузере нет профиля «'+login+'». Заведите аккаунт на странице регистрации.');
+      return;
+    }
+  }
+  busy(false);
+  finish(mode,user,login);
+});
+
+/* ══════════ СТАРТ: гарантированно один видимый блок ══════════ */
+showLoggedOut();
+buildReel();
+renderLine();
+loadCap();
+checkSession();
+detectLayout();
+alignToBrand();
+$('#machine').focus({preventScroll:true});
+})();
+</script>
+</body>
+</html>

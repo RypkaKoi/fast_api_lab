@@ -1,37 +1,17 @@
 <!--
-  ═══════════════════════════════════════════════════════════════════
   index.html · CREMA — витрина кофе · ГЛАВНАЯ (1 из 6)
-  Карта сайта: /  /login  /register  /profile  /admin  /404
+  Карта сайта: index.html · login.html · register.html · profile.html · admin.html · 404.html
+  
+  Все переходы между страницами — .html-файлы рядом.
+  Внутристраничные якоря (#top, #varieties, #drinks, #journey) работают
+  и через сервер, и при открытии файла напрямую.
 
-  ФОН: сгенерированный бесшовный фон из зёрен теперь ВСТРОЕН в style.css
-  (переменная --beans-tex). Внешних файлов не требуется — ошибки
-  загрузки больше нет. Если захотите реальное фото: сохраните его как
-  beans-bg.jpg и в style.css поменяйте --photo (инструкция там же).
-
-  Структура (оба файла в одной папке):
+  Структура (файлы в одной папке):
       project/
         main.py
         index.html
         style.css
-
-  main.py (FastAPI + Uvicorn):
-      from fastapi import FastAPI
-      from fastapi.responses import FileResponse
-
-      app = FastAPI()
-
-      @app.get("/")
-      async def index():
-          return FileResponse("index.html")
-
-      @app.get("/style.css")
-      async def css():
-          return FileResponse("style.css", media_type="text/css")
-
-  Запуск:  uvicorn main:app --reload
-  (Когда страниц станет больше — перейдите на StaticFiles:
-   app.mount("/static", StaticFiles(directory="static"), name="static"))
-  ═══════════════════════════════════════════════════════════════════
+        login.html / register.html / ... (остальные страницы)
 -->
 <!DOCTYPE html>
 <html lang="ru">
@@ -93,15 +73,15 @@
 <!-- ══════════ ШАПКА ══════════ -->
 <header id="header">
   <div class="head-in">
-    <a class="logo" href="#top" aria-label="CREMA — на главную">
+    <a class="logo" href="index.html" aria-label="CREMA — на главную">
       <svg viewBox="0 0 80 80" aria-hidden="true"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg>
       <span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span>
     </a>
     <nav class="nav" aria-label="Основная навигация">
-      <a href="#top" data-nav="top" class="active">Витрина</a>
-      <a href="#varieties" data-nav="varieties">Сорта</a>
-      <a href="#drinks" data-nav="drinks">Напитки</a>
-      <a href="#journey" data-nav="journey">Путь зерна</a>
+      <a href="index.html#top" data-nav="top" class="active">Витрина</a>
+      <a href="index.html#varieties" data-nav="varieties">Сорта</a>
+      <a href="index.html#drinks" data-nav="drinks">Напитки</a>
+      <a href="index.html#journey" data-nav="journey">Путь зерна</a>
     </nav>
     <div class="head-act">
       <div class="fav-wrap">
@@ -112,11 +92,13 @@
         <div id="favPanel" role="dialog" aria-label="Избранное">
           <div class="fp-head">Избранное <span id="fpCount">0 позиций</span></div>
           <div id="favList"></div>
-          <a class="fp-foot" href="/login">Войти и синхронизировать →</a>
+          <a class="fp-foot auth-guest" href="login.html">Войти и синхронизировать →</a>
+          <a class="fp-foot auth-user" href="profile.html" hidden>Открыть профиль →</a>
         </div>
       </div>
-      <a class="btn btn-ghost btn-sm" href="/login"><svg class="ic"><use href="#i-user"/></svg>Войти</a>
-      <a class="btn btn-sm" href="/register">Регистрация</a>
+      <a class="btn btn-ghost btn-sm auth-guest" href="login.html"><svg class="ic"><use href="#i-user"/></svg>Войти</a>
+      <a class="btn btn-sm auth-guest" href="register.html">Регистрация</a>
+      <a class="btn btn-sm auth-user" href="profile.html" hidden><svg class="ic"><use href="#i-user"/></svg>Профиль</a>
       <button id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
     </div>
   </div>
@@ -124,13 +106,14 @@
 
 <!-- мобильное меню -->
 <div id="mMenu" aria-hidden="true">
-  <a class="m-link" href="#top">Витрина <small>01</small></a>
-  <a class="m-link" href="#varieties">Сорта <small>02</small></a>
-  <a class="m-link" href="#drinks">Напитки <small>03</small></a>
-  <a class="m-link" href="#journey">Путь зерна <small>04</small></a>
+  <a class="m-link" href="index.html#top">Витрина <small>01</small></a>
+  <a class="m-link" href="index.html#varieties">Сорта <small>02</small></a>
+  <a class="m-link" href="index.html#drinks">Напитки <small>03</small></a>
+  <a class="m-link" href="index.html#journey">Путь зерна <small>04</small></a>
   <div class="m-auth">
-    <a class="btn btn-ghost" href="/login">Войти</a>
-    <a class="btn" href="/register">Регистрация</a>
+    <a class="btn btn-ghost auth-guest" href="login.html">Войти</a>
+    <a class="btn auth-guest" href="register.html">Регистрация</a>
+    <a class="btn auth-user" href="profile.html" hidden>Профиль</a>
   </div>
   <p class="m-note">CREMA · 6 СТРАНИЦ · FASTAPI + UVICORN</p>
 </div>
@@ -148,8 +131,8 @@
       <h1 data-stage style="--d:.14s">От зерна<br>до <em>чашки</em></h1>
       <p class="hero-lead" data-stage style="--d:.24s">Каталог витрины: шесть сортов с паспортами лотов, девять напитков с точными пропорциями и интерактивная шкала обжарки. Данные обновляются с каждой партией.</p>
       <div class="hero-cta" data-stage style="--d:.34s">
-        <a class="btn" href="#varieties"><svg viewBox="0 0 80 80" class="ic" style="fill:currentColor;stroke:none"><use href="#bean-fill"/></svg>Каталог сортов</a>
-        <a class="btn btn-ghost" href="#drinks"><svg class="ic"><use href="#i-cup"/></svg>Напитки и рецепты</a>
+        <a class="btn" href="index.html#varieties"><svg viewBox="0 0 80 80" class="ic" style="fill:currentColor;stroke:none"><use href="#bean-fill"/></svg>Каталог сортов</a>
+        <a class="btn btn-ghost" href="index.html#drinks"><svg class="ic"><use href="#i-cup"/></svg>Напитки и рецепты</a>
       </div>
       <div class="stats" data-stage style="--d:.46s">
         <div class="stat"><b>06</b><span>сортов</span></div>
@@ -242,7 +225,7 @@
     </div>
     <div class="subrow reveal" style="--d:.15s">
       <span id="vCount" aria-live="polite">6 из 6 сортов</span>
-      <a class="admin-link" href="/admin" title="Страница управления содержимым витрины"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a>
+      <a class="admin-link" href="admin.html" title="Страница управления содержимым витрины"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a>
     </div>
 
     <div class="v-grid" id="vGrid"></div>
@@ -299,7 +282,7 @@
         <div><b>92–96 °C</b><span>рабочая температура воды</span></div>
       </div>
       <br>
-      <a class="btn btn-dark" href="#varieties"><svg class="ic"><use href="#i-arr"/></svg>К каталогу сортов</a>
+      <a class="btn btn-dark" href="index.html#varieties"><svg class="ic"><use href="#i-arr"/></svg>К каталогу сортов</a>
     </div>
     <div class="steps">
       <article class="step reveal" style="--d:.05s"><span class="step-n">01</span><div><h3><svg class="ic"><use href="#i-pin"/></svg>Происхождение</h3><p>Высота, вулканическая почва и разновидность дерева задают характер зерна. Чем выше плантация, тем медленнее созревает ягода — и тем сложнее кислотность в чашке.</p></div></article>
@@ -325,8 +308,9 @@
       <div class="cta-card reveal" style="--d:.19s"><svg class="ic"><use href="#i-lock"/></svg><h3>Панель управления</h3><p>Редакторы смогут добавлять сорта, изменять цены и рецепты на отдельной странице управления витриной.</p></div>
     </div>
     <div class="cta-row reveal" style="--d:.2s">
-      <a class="btn" href="/register"><svg class="ic"><use href="#i-user"/></svg>Создать аккаунт</a>
-      <a class="btn btn-ghost-ink" href="/login">Войти</a>
+      <a class="btn auth-guest" href="register.html"><svg class="ic"><use href="#i-user"/></svg>Создать аккаунт</a>
+      <a class="btn btn-ghost-ink auth-guest" href="login.html">Войти</a>
+      <a class="btn auth-user" href="profile.html" hidden><svg class="ic"><use href="#i-user"/></svg>Профиль</a>
       <span class="cta-stack">FASTAPI · UVICORN · 6 СТРАНИЦ</span>
     </div>
   </div>
@@ -338,28 +322,28 @@
   <div class="wrap">
     <div class="f-grid">
       <div class="f-brand">
-        <a class="logo" href="#top"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
+        <a class="logo" href="index.html"><svg viewBox="0 0 80 80" style="width:32px;height:32px;transform:rotate(-20deg)"><use href="#bean-fill" fill="url(#g-bourbon)"/></svg><span class="logo-t"><b>CREMA</b><span>кофейная витрина</span></span></a>
         <p>Витрина спешелти-кофе: происхождение, обжарка и точные составы напитков. Обжарка малыми партиями, каппинг каждую пятницу.</p>
         <div class="f-badges"><span class="f-badge">FastAPI</span><span class="f-badge">Uvicorn</span><span class="f-badge">HTML · CSS · JS</span></div>
       </div>
       <div class="f-col">
         <h4>Витрина</h4>
         <ul>
-          <li><a href="#varieties">Сорта и микролоты</a></li>
-          <li><a href="#drinks">Напитки и рецепты</a></li>
-          <li><a href="#journey">Путь зерна</a></li>
-          <li><a href="#top">Шкала обжарки</a></li>
+          <li><a href="index.html#varieties">Сорта и микролоты</a></li>
+          <li><a href="index.html#drinks">Напитки и рецепты</a></li>
+          <li><a href="index.html#journey">Путь зерна</a></li>
+          <li><a href="index.html#top">Шкала обжарки</a></li>
         </ul>
       </div>
       <div class="f-col">
         <h4>Страницы · 6</h4>
         <ul>
-          <li><a href="/"><span class="cur"></span>Главная</a></li>
-          <li><a href="/login">Вход <span class="soon">скоро</span></a></li>
-          <li><a href="/register">Регистрация <span class="soon">скоро</span></a></li>
-          <li><a href="/profile">Личный профиль <span class="soon">скоро</span></a></li>
-          <li><a href="/admin"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной <span class="soon">скоро</span></a></li>
-          <li><a href="/404">Страница 404</a></li>
+          <li><a href="index.html"><span class="cur"></span>Главная</a></li>
+          <li class="auth-guest"><a href="login.html">Вход</a></li>
+          <li class="auth-guest"><a href="register.html">Регистрация</a></li>
+          <li><a href="profile.html">Личный профиль</a></li>
+          <li><a href="admin.html"><svg class="ic"><use href="#i-lock"/></svg>Управление витриной</a></li>
+          <li><a href="404.html">Страница 404</a></li>
         </ul>
       </div>
       <div class="f-col">
@@ -389,6 +373,22 @@
 <div id="toasts" aria-live="polite"></div>
 <button id="backTop" aria-label="Наверх"><svg class="ic"><use href="#i-up"/></svg></button>
 
+<script>
+/* Авторизация: гость видит «Войти / Регистрация», вошедший — «Профиль» */
+(function(){
+  var st=document.createElement('style');
+  st.textContent='.auth-user[hidden],.auth-guest[hidden]{display:none!important}';
+  document.head.appendChild(st);
+  function apply(on){
+    document.querySelectorAll('.auth-guest').forEach(function(e){e.hidden=on;});
+    document.querySelectorAll('.auth-user').forEach(function(e){e.hidden=!on;});
+  }
+  fetch('/api/me',{credentials:'same-origin',cache:'no-store'})
+    .then(function(r){return r.json();})
+    .then(function(d){apply(!!(d&&d.authenticated));})
+    .catch(function(){});
+})();
+</script>
 <script>
 (function(){
 'use strict';
@@ -532,7 +532,7 @@ function toggleFav(key){
 function renderFavPanel(){
  const list=$('#favList');
  if(!favs.size){
-   list.innerHTML='<div class="fp-empty"><svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#b4a691"/></svg>Список пуст.<br>Отмечайте закладкой сорта и напитки —<br>или <a href="#varieties" data-close-panel>начните с каталога</a>.</div>';
+   list.innerHTML='<div class="fp-empty"><svg viewBox="0 0 80 80"><use href="#bean-fill" fill="#b4a691"/></svg>Список пуст.<br>Отмечайте закладкой сорта и напитки —<br>или <a href="index.html#varieties" data-close-panel>начните с каталога</a>.</div>';
    return;
  }
  list.innerHTML=[...favs].map(k=>{
